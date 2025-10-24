@@ -1,33 +1,34 @@
 ﻿# pragma once
 # include "Common.hpp"
 
-class BasePoly {
+class BasePiece {
 public:
-	BasePoly() = default;
+	BasePiece() = default;
 
-	explicit BasePoly(const ColorF& color)
+	explicit BasePiece(const ColorF& color)
 		: m_color(color) {
 	}
 
-	virtual ~BasePoly() = default;
+	virtual ~BasePiece() = default;
 
-	virtual void update() = 0;
+	void update();
 
 	virtual void draw() const = 0;
 
+	Polygon getPolygon() const {
+		return m_polygon;
+	}
+
 protected:
 	ColorF m_color{ 0.00, 0.00, 0.00 };
+	Polygon m_polygon;
 };
 
-class TrianglePoly : public BasePoly {
+class TrianglePiece : public BasePiece {
 public:
-	TrianglePoly(const Vec2& p1, const Vec2& p2, const Vec2& p3, const ColorF& color);
-
-	void update() override;
+	TrianglePiece(const Vec2& p1, const Vec2& p2, const Vec2& p3, const ColorF& color);
 
 	void draw() const override;
-private:
-	Vec2 m_p1, m_p2, m_p3;
 };
 
 
@@ -67,6 +68,6 @@ private:
 
 	Rect getPaddle() const;
 
-	Array<std::unique_ptr<BasePoly>> m_polygons;
+	Array<std::unique_ptr<BasePiece>> m_pieces;
 };
 
