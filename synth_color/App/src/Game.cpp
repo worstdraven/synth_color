@@ -10,6 +10,11 @@ Game::Game(const InitData& init)
 			m_bricks << Rect{ (x * BrickSize.x), (60 + y * BrickSize.y), BrickSize };
 		}
 	}
+
+	m_polygons << std::make_unique<TrianglePoly>(Vec2{ 100, 100 }, Vec2{ 150, 100 }, Vec2{ 150, 150 }, ColorF{ 1.0, 0.0, 0.0 });
+	m_polygons << std::make_unique<TrianglePoly>(Vec2{ 100, 200 }, Vec2{ 150, 200 }, Vec2{ 150, 250 }, ColorF{ 1.0, 0.0, 0.0 });
+	m_polygons << std::make_unique<TrianglePoly>(Vec2{ 100, 300 }, Vec2{ 150, 300 }, Vec2{ 150, 350 }, ColorF{ 1.0, 0.0, 0.0 });
+	m_polygons << std::make_unique<TrianglePoly>(Vec2{ 100, 400 }, Vec2{ 150, 400 }, Vec2{ 150, 450 }, ColorF{ 1.0, 0.0, 0.0 });
 }
 
 void Game::update()
@@ -65,13 +70,8 @@ void Game::update()
 		m_ballVelocity = Vec2{ (m_ball.x - paddle.center().x) * 10, -m_ballVelocity.y }.setLength(BallSpeed);
 	}
 
-	// 画面外に出るか、ブロックが無くなったら
-	if ((600 < m_ball.y) || m_bricks.isEmpty())
-	{
-		// ランキング画面へ
-		changeScene(State::Ranking);
-
-		getData().lastScore = m_score;
+	for (auto& poly : m_polygons) {
+		poly->update();
 	}
 }
 
@@ -91,14 +91,67 @@ void Game::draw() const
 	// パドルを描く
 	getPaddle().rounded(3).draw();
 
-	// マウスカーソルを非表示にする
-	Cursor::RequestStyle(CursorStyle::Hidden);
 
 	// スコアを描く
 	FontAsset(U"Bold")(m_score).draw(24, Vec2{ 400, 16 });
+
+	for (const auto& poly : m_polygons) {
+		poly->draw();
+	}
 }
 
 Rect Game::getPaddle() const
 {
 	return{ Arg::center(Cursor::Pos().x, 500), 60, 10 };
+}
+
+TrianglePoly::TrianglePoly(const Vec2& p1, const Vec2& p2, const Vec2& p3, const ColorF& color)
+	: BasePoly{ color }, m_p1(p1), m_p2(p2), m_p3(p3) {
+}
+
+void TrianglePoly::update() {
+	// Current mouse position (float)
+	const Vec2 mouse = Cursor::PosF();
+
+	// Triangle built from current vertices
+	const Triangle tri{ m_p1, m_p2, m_p3 };
+
+	// Single-instance drag state (static so state persists across frames)
+	static bool sDragging = false;
+	static Vec2 sGrabOffset{ 0.0, 0.0 };
+
+	// Start dragging if mouse pressed inside triangle
+	if (MouseL.down())
+	{
+		if (tri.contains(mouse))
+		{
+			sDragging = true;
+			const Vec2 center = (m_p1 + m_p2 + m_p3) / 3.0;
+			sGrabOffset = mouse - center;
+		}
+	}
+
+	// While dragging, move the triangle to follow the mouse (preserve initial grab offset)
+	if (sDragging)
+	{
+		if (MouseL.pressed())
+		{
+			const Vec2 center = (m_p1 + m_p2 + m_p3) / 3.0;
+			const Vec2 newCenter = mouse - sGrabOffset;
+			const Vec2 delta = newCenter - center;
+
+			m_p1 += delta;
+			m_p2 += delta;
+			m_p3 += delta;
+		}
+		else if (MouseL.up())
+		{
+			// End dragging on button release
+			sDragging = false;
+		}
+	}
+}
+
+void TrianglePoly::draw() const {
+	Triangle{ m_p1, m_p2, m_p3 }.draw(m_color);
 }
