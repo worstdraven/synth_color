@@ -5,7 +5,7 @@ class BasePiece {
 public:
 	BasePiece() = default;
 
-	explicit BasePiece(const ColorF& color)
+	explicit BasePiece(const Color& color)
 		: m_color(color) {
 	}
 
@@ -13,22 +13,41 @@ public:
 
 	void update();
 
-	virtual void draw() const = 0;
+	inline void draw() const {
+		m_polygon.draw(m_color);
+	}
 
-	Polygon getPolygon() const {
+	inline Polygon getPolygon() const {
 		return m_polygon;
 	}
 
 protected:
-	ColorF m_color{ 0.00, 0.00, 0.00 };
+	Color m_color{ 255, 255, 255 };
 	Polygon m_polygon;
 };
 
 class TrianglePiece : public BasePiece {
 public:
-	TrianglePiece(const Vec2& p1, const Vec2& p2, const Vec2& p3, const ColorF& color);
+	inline TrianglePiece(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = Triangle{ p1, p2, p3 }.asPolygon();
+	};
+};
 
-	void draw() const override;
+class RectanglePiece : public BasePiece {
+public:
+	inline RectanglePiece(const Vec2& pos, const Size& size, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = RectF{ pos, size }.asPolygon();
+	};
+};
+
+class CirclePiece : public BasePiece {
+public:
+	inline CirclePiece(const Vec2& center, double radius, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = Circle{ center, radius }.asPolygon(30);
+	};
 };
 
 

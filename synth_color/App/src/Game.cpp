@@ -7,6 +7,9 @@ Game::Game(const InitData& init)
 	m_pieces << std::make_unique<TrianglePiece>(Vec2{ 300, 500 }, Vec2{ 400, 600 }, Vec2{ 300, 600 }, ColorF{ 0.0, 1.0, 1.0, 0.2 });
 	m_pieces << std::make_unique<TrianglePiece>(Vec2{ 500, 500 }, Vec2{ 600, 600 }, Vec2{ 500, 600 }, ColorF{ 1.0, 0.0, 1.0, 0.2 });
 	m_pieces << std::make_unique<TrianglePiece>(Vec2{ 700, 500 }, Vec2{ 800, 600 }, Vec2{ 700, 600 }, ColorF{ 1.0, 1.0, 0.0, 0.2 });
+	m_pieces << std::make_unique<RectanglePiece>(Vec2{ 150, 200 }, Size{ 100, 150 }, ColorF{ 1.0, 0.0, 0.0, 0.2 });
+	m_pieces << std::make_unique<CirclePiece>(Vec2{ 600, 200 }, 75.0, ColorF{ 0.0, 0.0, 1.0, 0.2 });
+
 }
 
 void Game::update()
@@ -40,11 +43,3 @@ void BasePiece::update() {
 	}
 }
 
-TrianglePiece::TrianglePiece(const Vec2& p1, const Vec2& p2, const Vec2& p3, const ColorF& color)
-	: BasePiece{ color } {
-	m_polygon = Triangle{ p1, p2, p3 }.asPolygon();
-}
-
-void TrianglePiece::draw() const {
-	m_polygon.draw(m_color);
-}
