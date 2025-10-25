@@ -11,7 +11,7 @@ void Main()
 	FontAsset::Register(U"Bold", FontMethod::MSDF, 48, Typeface::Bold);
 
 	App manager;
-	manager.add<Title>(State::Title);
+	//manager.add<Title>(State::Title);
 	manager.add<Game>(State::Game);
 	manager.add<Ranking>(State::Ranking);
 
