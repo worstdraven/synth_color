@@ -21,7 +21,7 @@ void Game::update()
 		// マウスが話されたとき
 		if (MouseL.up()) {
 			Vec2 pos = m_pieces[selected_piece_index]->getPrimaryPos();
-			Vec2 dest = { std::ceil((pos.x - grid_size / 2) / grid_size) * grid_size, ::ceil((pos.y - grid_size / 2) / grid_size) * grid_size };
+			Vec2 dest = { std::ceil(pos.x / grid_size - 0.5) * grid_size, ::ceil(pos.y / grid_size - 0.5) * grid_size };
 			Print << dest << pos;
 			m_pieces[selected_piece_index]->moveBy(dest - pos);
 			selected_piece_index = -1;
