@@ -11,14 +11,24 @@ public:
 
 	virtual ~BasePiece() = default;
 
-	void update();
-
 	inline void draw() const {
 		m_polygon.draw(m_color);
 	}
 
 	inline Polygon getPolygon() const {
 		return m_polygon;
+	}
+
+	inline void moveBy(const Vec2& delta) {
+		m_polygon.moveBy(delta);
+	}
+
+	inline Array<Polygon> intersectedPolygons(const Polygon& other) const {
+		return Geometry2D::And(m_polygon, other);
+	}
+
+	inline bool isPolygonPressed() const {
+		return m_polygon.leftClicked();
 	}
 
 protected:
@@ -64,6 +74,11 @@ public:
 
 private:
 
+	// ドラッグ中の図形のインデックス
+	int selected_piece_index = -1;
+
+	// 図形の配列
 	Array<std::unique_ptr<BasePiece>> m_pieces;
+
 };
 
