@@ -14,8 +14,23 @@ Game::Game(const InitData& init)
 
 void Game::update()
 {
-	for (auto& poly : m_pieces) {
-		poly->update();
+
+	if (selected_piece_index != -1) {
+		if (MouseL.up()) {
+			selected_piece_index = -1;
+		}
+		else {
+			m_pieces[selected_piece_index]->moveBy(Cursor::DeltaF());
+		}
+	}
+	else {
+		for (int idx = 0;  auto& poly : m_pieces) {
+			if (poly->isPolygonPressed()) {
+				selected_piece_index = idx;
+				break;
+			}
+			++idx;
+		}
 	}
 
 	const Array<Polygon> intersection_polygon = Geometry2D::And(m_pieces[0]->getPolygon(), m_pieces[1]->getPolygon());
@@ -34,12 +49,6 @@ void Game::draw() const
 
 	for (const auto& poly : m_pieces) {
 		poly->draw();
-	}
-}
-
-void BasePiece::update() {
-	if (m_polygon.leftPressed()) {
-		m_polygon.moveBy(Cursor::DeltaF());
 	}
 }
 
