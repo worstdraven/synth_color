@@ -18,9 +18,15 @@ void Game::update()
 {
 	// 図形のドラッグ処理
 	if (selected_piece_index != -1) {
+		// マウスが話されたとき
 		if (MouseL.up()) {
+			Vec2 pos = m_pieces[selected_piece_index]->getPrimaryPos();
+			Vec2 dest = { std::ceil((pos.x - grid_size / 2) / grid_size) * grid_size, ::ceil((pos.y - grid_size / 2) / grid_size) * grid_size };
+			Print << dest << pos;
+			m_pieces[selected_piece_index]->moveBy(dest - pos);
 			selected_piece_index = -1;
 		}
+		// ドラッグされている間
 		else {
 			m_pieces[selected_piece_index]->moveBy(Cursor::DeltaF());
 		}
@@ -32,6 +38,12 @@ void Game::update()
 				break;
 			}
 			++idx;
+		}
+	}
+
+	for (int i = grid_size; i < Scene::Width(); i += grid_size) {
+		for (int j = grid_size; j < Scene::Height(); j += grid_size) {
+			Circle{ i, j, 1 }.draw(Palette::Black);
 		}
 	}
 
