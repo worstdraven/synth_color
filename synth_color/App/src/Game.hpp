@@ -23,10 +23,6 @@ public:
 		m_polygon.moveBy(delta);
 	}
 
-	inline Array<Polygon> intersectedPolygons(const Polygon& other) const {
-		return Geometry2D::And(m_polygon, other);
-	}
-
 	inline bool isPolygonPressed() const {
 		return m_polygon.leftClicked();
 	}
