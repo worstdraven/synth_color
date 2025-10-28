@@ -19,29 +19,33 @@ void Game::update()
 		const Transformer2D t{ Mat3x2::Identity(), Mat3x2::Translate(viewportTopLeft) };
 
 		// 図形のドラッグ処理
-		if (selected_piece_index != -1) {
+		if (m_selectedPieceIndex != -1) {
 			// マウスが話されたとき
 			if (MouseL.up()) {
-				Vec2 pos = m_pieces[selected_piece_index]->getPrimaryPos() + viewportTopLeft;
-				Vec2 dest = { std::ceil(pos.x / grid_size - 0.5) * grid_size, ::ceil(pos.y / grid_size - 0.5) * grid_size };
+				Vec2 pos = m_pieces[m_selectedPieceIndex]->getPrimaryPos() + viewportTopLeft;
+				Vec2 dest = { std::ceil(pos.x / m_gridSize - 0.5) * m_gridSize, ::ceil(pos.y / m_gridSize - 0.5) * m_gridSize };
 				Print << dest << pos;
-				m_pieces[selected_piece_index]->moveBy(dest - pos);
-				selected_piece_index = -1;
+				m_pieces[m_selectedPieceIndex]->moveBy(dest - pos);
+				m_selectedPieceIndex = -1;
 			}
 			// ドラッグされている間
 			else {
-				m_pieces[selected_piece_index]->moveBy(Cursor::DeltaF());
+				m_pieces[m_selectedPieceIndex]->moveBy(Cursor::DeltaF());
 			}
 		}
 		else {
 			for (int idx = 0; auto& poly : m_pieces) {
 				if (poly->isPolygonPressed()) {
-					selected_piece_index = idx;
+					m_selectedPieceIndex = idx;
 					break;
 				}
 				++idx;
 			}
 		}
+	}
+
+	if (SimpleGUI::Button(U"Back to Title", Vec2{ 20, 20 })) {
+		changeScene(State::Title, 1000);
 	}
 
 
@@ -55,16 +59,16 @@ void Game::draw() const
 	const double h = Scene::Height();
 	const Point viewportTopLeft = Vec2{ w * 0.45, h * 0.15 }.asPoint();
 	const Rect viewportRect{ viewportTopLeft, static_cast<int>(w * 0.5), static_cast<int>(h * 0.75) };
-	viewportRect.rounded(5.0).draw(Palette::White).drawFrame(2, Palette::Black);
+	viewportRect.rounded(10.0).draw(Palette::White).drawFrame(2, Palette::Black);
 
 	{
-		// UI
+		// パズルビューポート
 		const ScopedViewport2D viewport{ viewportRect };
 
 		const Transformer2D t{ Mat3x2::Identity(), Mat3x2::Translate(viewportTopLeft) };
 
-		for (int i = grid_size; i < viewportRect.w; i += grid_size) {
-			for (int j = grid_size; j < viewportRect.h; j += grid_size) {
+		for (int i = m_gridSize; i < viewportRect.w; i += m_gridSize) {
+			for (int j = m_gridSize; j < viewportRect.h; j += m_gridSize) {
 				Circle{ i, j, 1 }.draw(Palette::Black);
 			}
 		}
@@ -89,7 +93,7 @@ void Game::draw() const
 				}
 			}
 		}
-
 	}
-}
 
+	RectF{ w * 0.05, h * 0.2, w * 0.35, h * 0.6 }.rounded(10.0).draw(Palette::Black);
+}

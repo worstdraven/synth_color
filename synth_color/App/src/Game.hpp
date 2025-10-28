@@ -81,12 +81,13 @@ public:
 private:
 
 	// ドラッグ中の図形のインデックス
-	int selected_piece_index = -1;
+	int m_selectedPieceIndex = -1;
 
 	// 図形の配列
 	Array<std::unique_ptr<BasePiece>> m_pieces;
 
 	// グリッドサイズ
-	const double grid_size = 30.0;
+	const int m_gridSize = 30;
+
 };
 
