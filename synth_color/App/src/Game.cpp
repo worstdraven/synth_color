@@ -41,12 +41,6 @@ void Game::update()
 		}
 	}
 
-	for (int i = grid_size; i < Scene::Width(); i += grid_size) {
-		for (int j = grid_size; j < Scene::Height(); j += grid_size) {
-			Circle{ i, j, 1 }.draw(Palette::Black);
-		}
-	}
-
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
 		for (int j = i + 1; j < m_pieces.size(); ++j) {
@@ -62,13 +56,30 @@ void Game::update()
 
 void Game::draw() const
 {
-	// 減算ブレンドで描画
-	const ScopedRenderStates2D blend{ BlendState::Subtractive };
+	Scene::SetBackground(Palette::Steelblue);
 
-	Scene::SetBackground(ColorF{ 1.0 });
+	// UI
+	const double w = Scene::Width();
+	const double h = Scene::Height();
 
-	for (const auto& poly : m_pieces) {
-		poly->draw();
+	const RoundRect puzzleWindow = RectF{ w * 0.55, h * 0.1, w * 0.4, h * 0.8 }.rounded(5.0).draw(Palette::White).drawFrame(2, Palette::Black);
+
+	for (int i = grid_size; i < w; i += grid_size) {
+		for (int j = grid_size; j < h; j += grid_size) {
+			Circle gridPoint{ i, j, 2 };
+			if (puzzleWindow.intersects(gridPoint)) {
+				gridPoint.draw(Palette::Black);
+			}
+		}
+	}
+
+	{
+		// 減算ブレンドで描画
+		const ScopedRenderStates2D blend{ BlendState::Subtractive };
+
+		for (const auto& poly : m_pieces) {
+			poly->draw();
+		}
 	}
 }
 
