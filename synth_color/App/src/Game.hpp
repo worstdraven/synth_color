@@ -22,7 +22,6 @@ public:
 
 	inline Vec2 getPrimaryPos() const {
 		return m_polygon.vertices()[0];
-		//return m_primary_pos;
 	};
 
 	inline void moveBy(const Vec2& delta) {
@@ -36,7 +35,6 @@ public:
 protected:
 	Color m_color{ 255, 255, 255 };
 	Polygon m_polygon;
-	//Vec2 m_primary_pos;
 };
 
 class TrianglePiece : public BasePiece {
@@ -44,7 +42,6 @@ public:
 	inline TrianglePiece(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color)
 		: BasePiece{ color } {
 		m_polygon = Triangle{ p1, p2, p3 }.asPolygon();
-		//m_primary_pos = p1;
 	};
 };
 
@@ -53,7 +50,6 @@ public:
 	inline RectanglePiece(const Vec2& pos, const Size& size, const Color& color)
 		: BasePiece{ color } {
 		m_polygon = RectF{ pos, size }.asPolygon();
-		//m_primary_pos = pos;
 	};
 };
 
@@ -62,7 +58,6 @@ public:
 	inline CirclePiece(const Vec2& center, double radius, const Color& color)
 		: BasePiece{ color } {
 		m_polygon = Circle{ center, radius }.asPolygon(30);
-		//m_primary_pos = center;
 	};
 };
 
@@ -81,12 +76,15 @@ public:
 private:
 
 	// ドラッグ中の図形のインデックス
-	int selected_piece_index = -1;
+	int m_selectedPieceIndex = -1;
 
 	// 図形の配列
 	Array<std::unique_ptr<BasePiece>> m_pieces;
 
 	// グリッドサイズ
-	const double grid_size = 30.0;
+	const int m_gridSize = 30;
+
+	Point m_puzzleViewportTopLeft{ static_cast<int>(Scene::Width() * 0.45), static_cast<int>(Scene::Height() * 0.15) };
+	Rect m_puzzleViewportRect{ m_puzzleViewportTopLeft, static_cast<int>(Scene::Width() * 0.5), static_cast<int>(Scene::Height() * 0.75) };
 };
 
