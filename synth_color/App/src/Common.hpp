@@ -5,6 +5,7 @@
 enum class State
 {
 	Title,
+	Level,
 	Game,
 	Ranking,
 };

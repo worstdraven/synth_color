@@ -44,8 +44,8 @@ void Game::update()
 		}
 	}
 
-	if (SimpleGUI::Button(U"Back to Title", Vec2{ 20, 20 })) {
-		changeScene(State::Title, 1000);
+	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
+		changeScene(State::Level, 1000);
 	}
 
 
