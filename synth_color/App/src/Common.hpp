@@ -1,5 +1,6 @@
 ﻿# pragma once
 # include <Siv3D.hpp>
+# include "Piece.hpp"
 
 // シーンのステート
 enum class State
@@ -18,6 +19,9 @@ struct GameData
 
 	// ハイスコア
 	Array<int32> highScores = { 10, 8, 6, 4, 2 };
+
+	// ピースの配列
+	Array<std::unique_ptr<BasePiece>> pieces;
 };
 
 using App = SceneManager<State, GameData>;

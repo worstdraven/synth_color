@@ -1,6 +1,5 @@
 ﻿# pragma once
 # include "Common.hpp"
-# include "Piece.hpp"
 
 
 // ゲームシーン
@@ -20,7 +19,7 @@ private:
 	int m_selectedPieceIndex = -1;
 
 	// 図形の配列
-	Array<std::unique_ptr<BasePiece>> m_pieces;
+	Array<std::unique_ptr<BasePiece>>& m_pieces;
 
 	// グリッドサイズ
 	const int m_gridSize = 30;

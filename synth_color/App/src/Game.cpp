@@ -1,12 +1,8 @@
 ﻿# include "Game.hpp"
 
 Game::Game(const InitData& init)
-	: IScene{ init }
+	: IScene{ init }, m_pieces{ getData().pieces }
 {
-	m_pieces << std::make_unique<CirclePiece>(Vec2{ 100, 100 }, 75.0, ColorF{ 1.0, 0.0, 0.0, 1.0 });
-	m_pieces << std::make_unique<CirclePiece>(Vec2{ 150, 200 }, 75.0, ColorF{ 0.0, 1.0, 0.0, 1.0 });
-	m_pieces << std::make_unique<CirclePiece>(Vec2{ 200, 300 }, 75.0, ColorF{ 0.0, 0.0, 1.0, 1.0 });
-
 }
 
 void Game::update()
