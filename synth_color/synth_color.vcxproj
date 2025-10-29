@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="App\src\Game.cpp" />
     <ClCompile Include="App\src\Level.cpp" />
+    <ClCompile Include="App\src\Piece.cpp" />
     <ClCompile Include="App\src\Ranking.cpp" />
     <ClCompile Include="App\src\Title.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="App\src\Common.hpp" />
     <ClInclude Include="App\src\Game.hpp" />
     <ClInclude Include="App\src\Level.hpp" />
+    <ClInclude Include="App\src\Piece.hpp" />
     <ClInclude Include="App\src\Ranking.hpp" />
     <ClInclude Include="App\src\Title.hpp" />
     <ClInclude Include="stdafx.h" />
