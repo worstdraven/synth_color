@@ -31,7 +31,10 @@ private:
 	// グリッドサイズ
 	const int m_gridSize = 30;
 
-	Point m_puzzleViewportTopLeft{ static_cast<int>(Scene::Width() * 0.45), static_cast<int>(Scene::Height() * 0.15) };
-	Rect m_puzzleViewportRect{ m_puzzleViewportTopLeft, static_cast<int>(Scene::Width() * 0.5), static_cast<int>(Scene::Height() * 0.75) };
+	//Point m_puzzleViewportTopLeft{ static_cast<int>(Scene::Width() * 0.45), static_cast<int>(Scene::Height() * 0.15) };
+	Rect m_puzzleViewportRect{
+		static_cast<int>(Scene::Width() * 0.45), static_cast<int>(Scene::Height() * 0.15),
+		static_cast<int>(Scene::Width() * 0.5), static_cast<int>(Scene::Height() * 0.80)
+	};
 };
 
