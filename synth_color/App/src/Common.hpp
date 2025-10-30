@@ -22,6 +22,8 @@ struct GameData
 
 	// ピースの配列
 	Array<std::unique_ptr<BasePiece>> pieces;
+
+	Array<Point> correctPositions;
 };
 
 using App = SceneManager<State, GameData>;

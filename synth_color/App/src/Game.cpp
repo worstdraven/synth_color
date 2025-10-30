@@ -5,6 +5,12 @@ Game::Game(const InitData& init)
 {
 }
 
+Game::~Game() {
+	//Print << U"Game destructor called.";
+	// ピース配列をクリア
+	m_pieces.clear();
+}
+
 void Game::update()
 {
 	{
@@ -23,6 +29,8 @@ void Game::update()
 				Print << dest << pos;
 				m_pieces[m_selectedPieceIndex]->moveBy(dest - pos);
 				m_selectedPieceIndex = -1;
+
+				checkPuzzleClear();
 			}
 			// ドラッグされている間、位置をマウスに追従させる
 			else {
@@ -41,7 +49,7 @@ void Game::update()
 	}
 
 	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
-		changeScene(State::Level, 1000);
+		changeScene(State::Level, 100);
 	}
 
 
@@ -90,3 +98,27 @@ void Game::draw() const
 	// 左側のお手本パネル
 	RectF{ Scene::Width() * 0.05, Scene::Height() * 0.2, Scene::Width() * 0.35, Scene::Height() * 0.6 }.rounded(10.0).draw(Palette::Black);
 }
+
+bool Game::checkPuzzleClear() const {
+	if (m_pieces.isEmpty()) {
+		Print << U"Cannot judge clear: no pieces.";
+		return false;
+	}
+	Array<Point> rerativePositions;
+	Point firstPos = m_pieces[0]->getPrimaryPos().asPoint();
+	for (const auto& piece : m_pieces) {
+		rerativePositions << piece->getPrimaryPos().asPoint() - firstPos;
+	}
+	if (rerativePositions.size() != getData().correctPositions.size()) {
+		Print << U"Cannot judge clear: size mismatch.";
+		return false;
+	}
+	for (int i = 0; i < rerativePositions.size(); ++i) {
+		if (rerativePositions[i] != getData().correctPositions[i]) {
+			Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
+			return false;
+		}
+	}
+	Print << U"Puzzle cleared!";
+	return true;
+};

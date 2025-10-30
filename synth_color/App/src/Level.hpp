@@ -1,11 +1,6 @@
 ﻿# pragma once
 # include "Common.hpp"
 
-class LevelInfo {
-private:
-	String m_levelTitle;
-};
-
 class Level : public App::Scene
 {
 public:
@@ -17,6 +12,5 @@ public:
 	void draw() const override;
 
 private:
-
-	Array<LevelInfo> m_levelInfos;
+	void setLevelDesign(int level);
 };
