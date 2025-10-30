@@ -1,0 +1,62 @@
+﻿# pragma once
+
+class BasePiece {
+public:
+	BasePiece() = default;
+
+	explicit BasePiece(const Color& color)
+		: m_color(color) {
+	}
+
+	virtual ~BasePiece() = default;
+
+
+	inline void draw() const {
+		m_polygon.draw(m_color);
+	}
+
+	inline Polygon getPolygon() const {
+		return m_polygon;
+	}
+
+	inline Vec2 getPrimaryPos() const {
+		return m_polygon.vertices()[0];
+	};
+
+	inline void moveBy(const Vec2& delta) {
+		m_polygon.moveBy(delta);
+	}
+
+	inline bool isPolygonPressed() const {
+		return m_polygon.leftClicked();
+	}
+
+protected:
+	Color m_color{ 255, 255, 255 };
+	Polygon m_polygon;
+};
+
+class TrianglePiece : public BasePiece {
+public:
+	inline TrianglePiece(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = Triangle{ p1, p2, p3 }.asPolygon();
+	};
+};
+
+class RectanglePiece : public BasePiece {
+public:
+	inline RectanglePiece(const Vec2& pos, const Size& size, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = RectF{ pos, size }.asPolygon();
+	};
+};
+
+class CirclePiece : public BasePiece {
+public:
+	inline CirclePiece(const Vec2& center, double radius, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = Circle{ center, radius }.asPolygon(30);
+	};
+};
+
