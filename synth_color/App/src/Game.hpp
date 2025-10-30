@@ -9,11 +9,15 @@ public:
 
 	Game(const InitData& init);
 
+	~Game();
+
 	void update() override;
 
 	void draw() const override;
 
+
 private:
+	bool checkPuzzleClear() const;
 
 	// ドラッグ中の図形のインデックス
 	int m_selectedPieceIndex = -1;
