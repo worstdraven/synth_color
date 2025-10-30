@@ -90,3 +90,13 @@ void Game::draw() const
 	// 左側のお手本パネル
 	RectF{ Scene::Width() * 0.05, Scene::Height() * 0.2, Scene::Width() * 0.35, Scene::Height() * 0.6 }.rounded(10.0).draw(Palette::Black);
 }
+
+void Game::updateFadeOut(double t) {
+	for (const auto& piece : m_pieces) {
+		piece->moveBy(Vec2{ 0.0, 1000.0 * t * Scene::DeltaTime() });
+	}
+}
+
+void Game::drawFadeOut(double t) const {
+	draw();
+}

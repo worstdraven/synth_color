@@ -13,6 +13,10 @@ public:
 
 	void draw() const override;
 
+	void updateFadeOut(double t) override;
+
+	void drawFadeOut(double t) const override;
+
 private:
 
 	// ドラッグ中の図形のインデックス
