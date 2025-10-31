@@ -19,6 +19,8 @@ void Main()
 
 	manager.init(State::Level, 0.2s);
 
+	Scene::SetBackground(Palette::White);
+
 	while (System::Update())
 	{
 		if (not manager.update())
