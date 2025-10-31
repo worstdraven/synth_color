@@ -24,6 +24,17 @@ struct GameData
 	Array<std::unique_ptr<BasePiece>> pieces;
 
 	Array<Point> correctPositions;
+
+	int16 gridSize = Scene::Width() / 25;
+
+	void drawGrid() const {
+		Scene::SetBackground(Palette::White);
+		for (int i = 0; i < Scene::Width(); i += gridSize) {
+			for (int j = 0; j < Scene::Height(); j += gridSize) {
+				Circle{ i, j, 1 }.draw(Palette::Black);
+			}
+		}
+	}
 };
 
 using App = SceneManager<State, GameData>;

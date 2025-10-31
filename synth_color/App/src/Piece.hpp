@@ -60,3 +60,35 @@ public:
 	};
 };
 
+// 多角形ピース
+class PolyPiece : public BasePiece {
+public:
+	inline PolyPiece(const Array<Vec2>& points, const Color& color)
+		: BasePiece{ color } {
+		m_polygon = Polygon{ points };
+	};
+};
+
+struct Piece {
+	inline Piece(const Polygon& poly, const Color& color)
+		: poly{ poly }
+		, color{ color } {
+	}
+
+	inline Piece(const Array<Vec2>& pos, const Color& color)
+		: poly{ pos }
+		, color{ color } {
+	}
+
+	inline Piece(const Vec2& center, double radius, const Color& color)
+		: poly{ Circle{center, radius}.asPolygon(30) }
+		, color{ color } {
+	}
+
+	inline void draw() const {
+		poly.draw(color);
+	}
+
+	Polygon poly;
+	Color color;
+};
