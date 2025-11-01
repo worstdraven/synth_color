@@ -37,7 +37,6 @@ private:
 	Transition m_exitTransition{ 0.4s, 0.2s };
 	Transition m_changeSceneTransition{ FadeOutDuration, 0.0s };
 
-	//Array<std::unique_ptr<BasePiece>> m_pieces;
 	Array<Piece> m_pieces;
 	Array<double> m_periods, m_phases, m_radiuses;
 };

@@ -21,7 +21,7 @@ struct GameData
 	Array<int32> highScores = { 10, 8, 6, 4, 2 };
 
 	// ピースの配列
-	Array<std::unique_ptr<BasePiece>> pieces;
+	Array<Piece> pieces;
 
 	Array<Point> correctPositions;
 

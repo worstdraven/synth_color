@@ -26,10 +26,7 @@ private:
 	int m_selectedPieceIndex = -1;
 
 	// 図形の配列
-	Array<std::unique_ptr<BasePiece>>& m_pieces;
-
-	// グリッドサイズ
-	const int m_gridSize = 30;
+	Array<Piece>& m_pieces;
 
 	//Point m_puzzleViewportTopLeft{ static_cast<int>(Scene::Width() * 0.45), static_cast<int>(Scene::Height() * 0.15) };
 	Rect m_puzzleViewportRect{

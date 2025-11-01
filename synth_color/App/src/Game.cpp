@@ -14,32 +14,33 @@ Game::~Game() {
 
 void Game::update()
 {
+	const int g = getData().gridSize;
 	// 図形のドラッグ処理
 	if (m_selectedPieceIndex != -1) {
 		// マウスが離されたときの処理
 		if (MouseL.up()) {
-			Vec2 pos = m_pieces[m_selectedPieceIndex]->getPrimaryPos();
+			Vec2 pos = m_pieces[m_selectedPieceIndex].getPrimaryPos();
 			// グリッドにスナップ
-			Vec2 dest{ std::ceil(pos.x / m_gridSize - 0.5) * m_gridSize, ::ceil(pos.y / m_gridSize - 0.5) * m_gridSize };
+			Vec2 dest{ std::ceil(pos.x / g - 0.5) * g, ::ceil(pos.y / g - 0.5) * g };
 			// ビューポート外に出ないように制限
 			dest.x = std::max(static_cast<double>(m_puzzleViewportRect.leftX()), dest.x);
 			dest.x = std::min(dest.x, static_cast<double>(m_puzzleViewportRect.rightX()));
 			dest.y = std::max(static_cast<double>(m_puzzleViewportRect.topY()), dest.y);
 			dest.y = std::min(dest.y, static_cast<double>(m_puzzleViewportRect.bottomY()));
-			Print << dest << pos;
-			m_pieces[m_selectedPieceIndex]->moveBy(dest - pos);
+			//Print << dest << pos;
+			m_pieces[m_selectedPieceIndex].poly.moveBy(dest - pos);
 			m_selectedPieceIndex = -1;
 
 			checkPuzzleClear();
 		}
 		// ドラッグされている間、位置をマウスに追従させる
 		else {
-			m_pieces[m_selectedPieceIndex]->moveBy(Cursor::DeltaF());
+			m_pieces[m_selectedPieceIndex].poly.moveBy(Cursor::DeltaF());
 		}
 	}
 	else {
-		for (int idx = 0; auto& poly : m_pieces) {
-			if (poly->isPolygonPressed()) {
+		for (int idx = 0; auto& piece : m_pieces) {
+			if (piece.poly.leftPressed()) {
 				m_selectedPieceIndex = idx;
 				break;
 			}
@@ -56,30 +57,28 @@ void Game::update()
 
 void Game::draw() const
 {
+	const int g = getData().gridSize;
+
 	FontAsset(U"Bold")(U"ステージ1").draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), Palette::Black);
 
 	// グリッドの描画
 	m_puzzleViewportRect.drawFrame(2, Palette::Darkgray);
 
-	for (int i = 0; i < Scene::Width(); i += m_gridSize) {
-		for (int j = 0; j < Scene::Height(); j += m_gridSize) {
-			Circle{ i, j, 1 }.draw(Palette::Black);
-		}
-	}
+	getData().drawGrid();
 
 	{
 		// 減算ブレンドで全ピースを描画
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 
-		for (const auto& poly : m_pieces) {
-			poly->draw();
+		for (const auto& piece : m_pieces) {
+			piece.draw();
 		}
 	}
 
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
 		for (int j = i + 1; j < m_pieces.size(); ++j) {
-			const Array<Polygon> intersection_polygon = Geometry2D::And(m_pieces[i]->getPolygon(), m_pieces[j]->getPolygon());
+			const Array<Polygon> intersection_polygon = Geometry2D::And(m_pieces[i].poly, m_pieces[j].poly);
 			for (const auto& polygon : intersection_polygon)
 			{
 				// 共通部分を黒で描画
@@ -89,7 +88,7 @@ void Game::draw() const
 	}
 
 	// 左側のお手本パネル
-	Circle{ Scene::Width() * .25, Scene::Height() * .5, Scene::Width() * .2 }.draw(Palette::Black);
+	Circle{ g * 6.0, g * 10.0 , g * 5.0}.draw(Palette::Black);
 }
 
 bool Game::checkPuzzleClear() const {
@@ -98,9 +97,9 @@ bool Game::checkPuzzleClear() const {
 		return false;
 	}
 	Array<Point> rerativePositions;
-	Point firstPos = m_pieces[0]->getPrimaryPos().asPoint();
+	Point firstPos = m_pieces[0].getPrimaryPos().asPoint();
 	for (const auto& piece : m_pieces) {
-		rerativePositions << piece->getPrimaryPos().asPoint() - firstPos;
+		rerativePositions << piece.getPrimaryPos().asPoint() - firstPos;
 	}
 	if (rerativePositions.size() != getData().correctPositions.size()) {
 		Print << U"Cannot judge clear: size mismatch.";
@@ -108,7 +107,7 @@ bool Game::checkPuzzleClear() const {
 	}
 	for (int i = 0; i < rerativePositions.size(); ++i) {
 		if (rerativePositions[i] != getData().correctPositions[i]) {
-			Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
+			//Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
 			return false;
 		}
 	}
@@ -117,8 +116,8 @@ bool Game::checkPuzzleClear() const {
 };
 
 void Game::updateFadeOut(double t) {
-	for (const auto& piece : m_pieces) {
-		piece->moveBy(Vec2{ 0.0, 1000.0 * t * Scene::DeltaTime() });
+	for (auto& piece : m_pieces) {
+		piece.poly.moveBy(Vec2{ 0.0, 1000.0 * t * Scene::DeltaTime() });
 	}
 }
 

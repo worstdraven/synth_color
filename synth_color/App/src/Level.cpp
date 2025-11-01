@@ -19,10 +19,12 @@ void Level::draw() const {
 }
 
 void Level::setLevelDesign(int level) {
+	const int g = getData().gridSize;
+
 	// レベルデザインの設定
-	getData().pieces << std::make_unique<CirclePiece>(Vec2{ 100, 100 }, 75.0, ColorF{ 1.0, 0.0, 0.0, 1.0 });
-	getData().pieces << std::make_unique<CirclePiece>(Vec2{ 200, 100 }, 75.0, ColorF{ 0.0, 1.0, 0.0, 1.0 });
-	getData().pieces << std::make_unique<CirclePiece>(Vec2{ 300, 100 }, 75.0, ColorF{ 1.0, 0.0, 0.0, 1.0 });
+	getData().pieces << Piece{ Vec2{ g * 15.0, g * 6.0 }, g * 2.0, ColorF{ 1.0, 0.0, 0.0, 1.0 } };
+	getData().pieces << Piece{ Vec2{ g * 17.0, g * 7.0 }, g * 2.0, ColorF{ 0.0, 1.0, 0.0, 1.0 } };
+	getData().pieces << Piece{ Vec2{ g * 19.0, g * 8.0 }, g * 2.0, ColorF{ 1.0, 0.0, 0.0, 1.0 } };
 
 	getData().correctPositions << Point{ 0, 0 };
 	getData().correctPositions << Point{ 90, 90 };
