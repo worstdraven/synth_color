@@ -18,23 +18,26 @@ Title::Title(const InitData& init)
 	temp.poly.rotateAt(temp.poly.centroid(), -19_deg);
 	m_pieces << temp;
 
-	// right circle
+	// right yellow circle
 	m_pieces << Piece{
-		Circle{ Vec2{ w * 0.7, h * 0.86} , g * 1.2 }.asPolygon(30),
-		ColorF{ 1.0, 0.0, 0.0, 1.0 }
-	};
-
-	// right rect
-	m_pieces << Piece{
-		Array<Vec2>{ Vec2{ w * 0.60, h * 0.30 }, Vec2{ w * 0.75, h * 0.50 }, Vec2{ w * 0.40, h * 0.55 } },
+		Circle{ Vec2{ w * 0.7, h * 0.9} , g * 1.8 }.asPolygon(30),
 		ColorF{ 0.0, 0.0, 1.0, 1.0 }
 	};
 
-	// right magenta rect
+	// right cyantriangle
 	m_pieces << Piece{
-		Polygon { { Vec2{ w * 0.80, h * 0.10 }, Vec2{ w * 0.95, h * 0.10 }, Vec2{ w * 0.95, h * 0.35 }, { w * 0.80, h * 0.35 } } },
+		Array<Vec2>{ Vec2{ w * 0.76, h * 0.78 }, Vec2{ w * 0.87, h * 1.02 }, Vec2{ w * 0.62, h * 0.92 } },
+		ColorF{ 1.0, 0.0, 0.0, 1.0 }
+	};
+
+	// right magenta rectangle
+	temp = Piece{
+		Polygon { { Vec2{ w * 0.82, h * 0.79 }, Vec2{ w * 0.93	, h * 0.79 }, Vec2{ w * 0.93, h * 1.1 }, { w * 0.82, h * 1.1 } } },
 		ColorF{ 0.0, 1.0, 0.0, 1.0 }
 	};
+	temp.poly.rotateAt(temp.poly.centroid(), 80_deg);
+	m_pieces << temp;
+
 
 	m_periods = { 12.0, 10.0, 14.0, 11.0, 9.4, 10.2 };
 	m_phases = { 1.0, 0.0, 1.0, 2.0, 1.2, 3,2 };
@@ -88,8 +91,9 @@ void Title::draw() const
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 		for (const auto& piece : m_pieces) {
-			piece.draw();
-			piece.poly.drawFrame(2, Palette::Darkslategray);
+			//piece.draw();
+			piece.poly.draw(ColorF{ piece.color.r / 255.0, piece.color.g / 255.0, piece.color.b / 255.0, 1.0 - m_changeSceneTransition.value() });
+			piece.poly.drawFrame(2, ColorF{ 47.0 / 255.0, 1 - m_changeSceneTransition.value() });
 		}
 	}
 }
