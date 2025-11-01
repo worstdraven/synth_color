@@ -6,6 +6,7 @@ Title::Title(const InitData& init)
 	int32 w = Scene::Width();
 	int32 h = Scene::Height();
 	int16& g = getData().gridSize;
+
 	m_pieces << Piece{ Vec2{ w * 0.28, h * 0.97 }, 3.1 * g, ColorF{ 0.0, 1.0, 0.0, 1.0 } };
 	m_pieces << Piece{
 		Array<Vec2>{ Vec2{ w * 0.36, h * 0.76 }, Vec2{ w * 0.46, h * 0.92 }, Vec2{ w * 0.23, h * 1.1 } },
@@ -80,6 +81,7 @@ void Title::update()
 
 void Title::draw() const
 {
+	// グリッド描画
 	getData().drawGrid();
 
 	// タイトル描画
@@ -91,7 +93,6 @@ void Title::draw() const
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 		for (const auto& piece : m_pieces) {
-			//piece.draw();
 			piece.poly.draw(ColorF{ piece.color.r / 255.0, piece.color.g / 255.0, piece.color.b / 255.0, 1.0 - m_changeSceneTransition.value() });
 			piece.poly.drawFrame(2, ColorF{ 47.0 / 255.0, 1 - m_changeSceneTransition.value() });
 		}
