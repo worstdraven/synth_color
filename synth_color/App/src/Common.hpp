@@ -37,4 +37,8 @@ struct GameData
 	}
 };
 
+static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };
+static constexpr ColorF SubtractiveMagenta = ColorF{ 0.0, 1.0, 0.0 };
+static constexpr ColorF SubtractiveYellow = ColorF{ 0.0, 0.0, 1.0 };
+
 using App = SceneManager<State, GameData>;
