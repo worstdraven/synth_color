@@ -27,6 +27,7 @@ struct GameData
 	Array<Piece> pieces;
 
 	Array<Point> correctPositions;
+	Point correctCenter;
 
 	int16 gridSize = Width() / 25;
 

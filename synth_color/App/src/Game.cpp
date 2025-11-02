@@ -97,8 +97,8 @@ void Game::draw() const
 				continue;
 			}
 			const Array<Polygon> intersection_polygon = Geometry2D::And(
-				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2 } + getData().correctPositions[i]),
-				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2 } + getData().correctPositions[j])
+				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]),
+				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[j])
 			);
 			for (const auto& polygon : intersection_polygon)
 			{
@@ -120,7 +120,7 @@ void Game::draw() const
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 		for (const auto&& [i, piece] : IndexedRef(m_pieces)) {
-			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1 , g * 2 } + getData().correctPositions[i]).draw(piece.color);
+			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]).draw(piece.color);
 		}
 	}
 }

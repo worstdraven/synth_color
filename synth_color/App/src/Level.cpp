@@ -103,6 +103,8 @@ void Level::setLevelDesign(int level) {
 		getData().correctPositions << Point{ 0, 0 };
 		getData().correctPositions << Point{ 2 * g, 0 * g };
 		getData().correctPositions << Point{ 1 * g, 2 * g };
+
+		getData().correctCenter = Point{ g * 1, g * 2 };
 		break;
 	case 2:
 		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
@@ -111,6 +113,8 @@ void Level::setLevelDesign(int level) {
 		getData().correctPositions << Point{ 0, 0 };
 		getData().correctPositions << Point{ 2 * g, 3 * g };
 		getData().correctPositions << Point{ 1 * g, 0 * g };
+
+		getData().correctCenter = Point{ g * 2, g * 2 };
 		break;
 	case 3:
 		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
@@ -119,7 +123,30 @@ void Level::setLevelDesign(int level) {
 		getData().correctPositions << Point{ 0, 0 };
 		getData().correctPositions << Point{ 2 * g, 3 * g };
 		getData().correctPositions << Point{ 1 * g, 0 * g };
+
+		getData().correctCenter = Point{ g * 2, g * 2 };
 		break;
+	case 4:
+		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, g * 5}, Vec2{0, g * 5} }, SubtractiveMagenta };
+		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{0, g * 5}, Vec2{-g * 3, g * 5} }, SubtractiveMagenta };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
+		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 3}, Vec2{0, g * 3 } }, SubtractiveCyan };
+		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 4}, Vec2{0, g * 4 } }, SubtractiveCyan };
+		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 1, 0}, Vec2{g * 1, g * 1}, Vec2{0, g * 1 } }, SubtractiveYellow };
+		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 2, 0}, Vec2{g * 2, g * 2}, Vec2{0, g * 2 } }, SubtractiveYellow };
+		getData().correctPositions << Point{ 0, 0 };
+		getData().correctPositions << Point{ g * 6, 0 };
+		getData().correctPositions << Point{ g * 3, g * 2 };
+		getData().correctPositions << Point{ g * 0, g * 2 };
+		getData().correctPositions << Point{ g * 3, g * 1 };
+		getData().correctPositions << Point{ g * 5, g * 0 };
+		getData().correctPositions << Point{ g * 0, g * 0 };
+
+		getData().correctCenter = Point{ g * 3, g * 3 };
+		break;
+	}
+	for (auto& Points : getData().correctPositions) {
+
 	}
 
 
