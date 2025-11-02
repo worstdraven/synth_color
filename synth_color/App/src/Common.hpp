@@ -38,6 +38,8 @@ struct GameData
 			}
 		}
 	}
+
+	int currentLevel = -1;
 };
 
 static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };

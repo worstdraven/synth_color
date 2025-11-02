@@ -17,6 +17,7 @@ Game::~Game() {
 	// ピース配列をクリア
 	m_pieces.clear();
 	getData().correctPositions.clear();
+	getData().currentLevel = -1;
 }
 
 void Game::update()
@@ -71,7 +72,8 @@ void Game::draw() const
 {
 	const int g = getData().gridSize;
 
-	FontAsset(U"Bold")(U"ステージ1").draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), Palette::Black);
+	FontAsset(U"Bold")(U"ステージ {}"_fmt(getData().currentLevel))
+		.draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), ColorF{0.0, m_fadeInTransition.value()});
 
 	// グリッドの描画
 	getData().drawGrid();
@@ -150,6 +152,7 @@ bool Game::checkPuzzleClear() const {
 };
 
 void Game::updateFadeIn(double t) {
+	m_fadeInTransition.update(true);
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (2 * t));
 	}
@@ -164,6 +167,8 @@ void Game::drawFadeIn(double t) const {
 }
 
 void Game::updateFadeOut(double t) {
+	m_clearTransition.update(true);
+	m_fadeInTransition.update(false);
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		piece.poly.moveBy((piece.origPos - piece.destPos ) * (t - m_deltaT) * (3 * t * t));
 	}

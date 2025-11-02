@@ -44,7 +44,7 @@ private:
 	Vec2 m_answerViewportDest{ m_answerViewport.center };
 	Vec2 m_answerViewportOrig{ - m_answerViewport.r, Height() + m_answerViewport.r};
 
-	Transition m_clearTransition{ 1.0s, 0.0s };
+	Transition m_clearTransition{ 1.0s, 0.0s }, m_fadeInTransition{ 1.5s, 0.0s };
 
 	double m_deltaT = 0;
 };

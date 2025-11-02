@@ -93,6 +93,8 @@ void Level::setLevelDesign(int level) {
 
 	// レベルデザインの設定
 
+	getData().currentLevel = level;
+
 	switch (level) {
 	case 1:
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
