@@ -10,8 +10,6 @@ Game::Game(const InitData& init)
 		piece.origPos = m_puzzleViewportDest + angle * radius * 7;
 		piece.poly.moveBy(-m_pieces[i].poly.centroid() + angle * radius * 7 + m_puzzleViewportDest);
 	}
-
-	//m_answerViewport.setCenter(m_answerViewportOrig);
 }
 
 Game::~Game() {
@@ -70,8 +68,6 @@ void Game::draw() const
 
 	FontAsset(U"Bold")(U"ステージ1").draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), Palette::Black);
 
-	m_puzzleViewport.drawFrame(2, Palette::Darkgray);
-
 	// グリッドの描画
 	getData().drawGrid();
 
@@ -90,6 +86,9 @@ void Game::draw() const
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
 		for (int j = i + 1; j < m_pieces.size(); ++j) {
+			if (m_pieces[i].color == m_pieces[j].color) {
+				continue;
+			}
 			const Array<Polygon> intersection_polygon = Geometry2D::And(
 				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2.5 } + getData().correctPositions[i]),
 				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2.5 } + getData().correctPositions[j])
@@ -115,20 +114,6 @@ void Game::draw() const
 			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1 , g * 2.5 } + getData().correctPositions[i]).draw(piece.color);
 		}
 	}
-
-	// 任意の2つのピースの組み合わせを走査
-	//for (int i = 0; i < m_pieces.size() - 1; ++i) {
-	//	for (int j = i + 1; j < m_pieces.size(); ++j) {
-	//		const Array<Polygon> intersection_polygon = Geometry2D::And(m_pieces[i].poly, m_pieces[j].poly);
-	//		for (const auto& polygon : intersection_polygon)
-	//		{
-	//			// 共通部分を黒で描画
-	//			polygon.drawFrame(2, Palette::Black);
-	//			subedView = Geometry2D::Subtract(subedView, polygon.moved)[0];
-	//		}
-	//	}
-	//}
-
 }
 
 bool Game::checkPuzzleClear() const {
