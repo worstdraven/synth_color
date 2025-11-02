@@ -3,6 +3,15 @@
 Game::Game(const InitData& init)
 	: IScene{ init }, m_pieces{ getData().pieces }
 {
+	const double radius = m_puzzleViewport.w / 3.0;
+	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
+		const Vec2 angle{ std::sin(360_deg * i / m_pieces.size()) ,std::cos(360_deg * i / m_pieces.size()) };
+		piece.destPos = m_puzzleViewportDest + angle * radius;
+		piece.origPos = m_puzzleViewportDest + angle * radius * 7;
+		piece.poly.moveBy(-m_pieces[i].poly.centroid() + angle * radius * 7 + m_puzzleViewportDest);
+	}
+
+	m_answerViewport.setCenter(m_answerViewportOrig);
 }
 
 Game::~Game() {
@@ -23,10 +32,10 @@ void Game::update()
 			// グリッドにスナップ
 			Vec2 dest{ std::ceil(pos.x / g - 0.5) * g, ::ceil(pos.y / g - 0.5) * g };
 			// ビューポート外に出ないように制限
-			dest.x = std::max(static_cast<double>(m_puzzleViewportRect.leftX()), dest.x);
-			dest.x = std::min(dest.x, static_cast<double>(m_puzzleViewportRect.rightX()));
-			dest.y = std::max(static_cast<double>(m_puzzleViewportRect.topY()), dest.y);
-			dest.y = std::min(dest.y, static_cast<double>(m_puzzleViewportRect.bottomY()));
+			dest.x = std::max(static_cast<double>(m_puzzleViewport.leftX()), dest.x);
+			dest.x = std::min(dest.x, static_cast<double>(m_puzzleViewport.rightX()));
+			dest.y = std::max(static_cast<double>(m_puzzleViewport.topY()), dest.y);
+			dest.y = std::min(dest.y, static_cast<double>(m_puzzleViewport.bottomY()));
 			//Print << dest << pos;
 			m_pieces[m_selectedPieceIndex].poly.moveBy(dest - pos);
 			m_selectedPieceIndex = -1;
@@ -61,9 +70,9 @@ void Game::draw() const
 
 	FontAsset(U"Bold")(U"ステージ1").draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), Palette::Black);
 
-	// グリッドの描画
-	m_puzzleViewportRect.drawFrame(2, Palette::Darkgray);
+	m_puzzleViewport.drawFrame(2, Palette::Darkgray);
 
+	// グリッドの描画
 	getData().drawGrid();
 
 	{
@@ -88,7 +97,7 @@ void Game::draw() const
 	}
 
 	// 左側のお手本パネル
-	Circle{ g * 6.0, g * 10.0 , g * 5.0}.draw(Palette::Black);
+	m_answerViewport.draw(Palette::Black);
 }
 
 bool Game::checkPuzzleClear() const {
@@ -107,13 +116,27 @@ bool Game::checkPuzzleClear() const {
 	}
 	for (int i = 0; i < rerativePositions.size(); ++i) {
 		if (rerativePositions[i] != getData().correctPositions[i]) {
-			//Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
+			Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
 			return false;
 		}
 	}
 	Print << U"Puzzle cleared!";
 	return true;
 };
+
+void Game::updateFadeIn(double t) {
+	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
+		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (3 * t * t));
+	}
+	m_answerViewport.moveBy((m_answerViewportDest - m_answerViewportOrig) * (t - m_deltaT) * (3 * t * t));
+	ClearPrint();
+	Print << t - m_deltaT;
+	m_deltaT = t;
+}
+
+void Game::drawFadeIn(double t) const {
+	draw();
+}
 
 void Game::updateFadeOut(double t) {
 	for (auto& piece : m_pieces) {

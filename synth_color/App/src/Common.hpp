@@ -2,6 +2,9 @@
 # include <Siv3D.hpp>
 # include "Piece.hpp"
 
+using Scene::Width;
+using Scene::Height;
+
 // シーンのステート
 enum class State
 {
@@ -25,12 +28,12 @@ struct GameData
 
 	Array<Point> correctPositions;
 
-	int16 gridSize = Scene::Width() / 25;
+	int16 gridSize = Width() / 25;
 
 	void drawGrid() const {
 		Scene::SetBackground(Palette::White);
-		for (int i = 0; i < Scene::Width(); i += gridSize) {
-			for (int j = 0; j < Scene::Height(); j += gridSize) {
+		for (int i = 0; i < Width(); i += gridSize) {
+			for (int j = 0; j < Height(); j += gridSize) {
 				Circle{ i, j, 1 }.draw(Palette::Black);
 			}
 		}
