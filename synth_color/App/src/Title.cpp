@@ -85,10 +85,10 @@ void Title::draw() const
 	getData().drawGrid();
 
 	// タイトル描画
-	m_titleLogo.scaled(1.6).drawAt(Scene::Width() / 2.0, Scene::Height() / 2.5, ColorF{ 1.0 , 1.0 - m_changeSceneTransition.value() });
+	m_titleLogo.scaled(0.4).drawAt(Scene::Width() / 2.11, Scene::Height() / 2.2, ColorF{ 1.0 , 1.0 - m_changeSceneTransition.value() });
 
 	FontAsset(U"CommonFont")(U"- クリックしてスタート -")
-		.drawAt(Scene::Width() / 2.0, Scene::Height() * 0.70, ColorF{ 0.0 , 1.0 - m_changeSceneTransition.value() });
+		.drawAt(Scene::Width() / 2.0, Scene::Height() * 0.65, ColorF{ 0.0 , 1.0 - m_changeSceneTransition.value() });
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };

@@ -30,4 +30,5 @@ struct Piece {
 
 	Polygon poly;
 	Color color;
+	Vec2 origPos, destPos;
 };
