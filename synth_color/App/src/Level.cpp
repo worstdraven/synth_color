@@ -14,7 +14,7 @@ struct ClickedButtonEffect : IEffect
 		m_coloredButtons << Piece{ pushedButton.poly, SubtractiveCyan };
 		m_coloredButtons << Piece{ pushedButton.poly, SubtractiveMagenta };
 		m_coloredButtons << Piece{ pushedButton.poly, SubtractiveYellow };
-		Print << U"Effect created:";
+		//Print << U"Effect created:";
 	};
 	bool update(double timeSec) override
 	{
@@ -38,8 +38,8 @@ struct ClickedButtonEffect : IEffect
 			}
 			FontAsset(U"Bold")(m_index).drawAt(button.poly.centroid(), ColorF{ 1.0 });
 		}
-		ClearPrint();
-		Print << timeSec;
+		//ClearPrint();
+		//Print << timeSec;
 		return Duration{ timeSec } < m_duration + m_delay;
 	}
 };

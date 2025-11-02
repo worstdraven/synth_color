@@ -40,9 +40,11 @@ private:
 	};
 	Vec2 m_puzzleViewportDest{ m_puzzleViewport.center()};
 
-	Circle m_answerViewport{ getData().gridSize * 6.0, getData().gridSize * 10.0 , getData().gridSize * 5.0 };
+	Circle m_answerViewport{ getData().gridSize * 6.0, getData().gridSize * 10.0 , getData().gridSize * 5.5 };
 	Vec2 m_answerViewportDest{ m_answerViewport.center };
 	Vec2 m_answerViewportOrig{ - m_answerViewport.r, Height() + m_answerViewport.r};
+
+	Transition m_clearTransition{ 1.0s, 0.0s };
 
 	double m_deltaT = 0;
 };

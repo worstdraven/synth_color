@@ -38,7 +38,7 @@ void Game::update()
 			m_pieces[m_selectedPieceIndex].poly.moveBy(dest - pos);
 			m_selectedPieceIndex = -1;
 
-			checkPuzzleClear();
+			m_clearTransition.update(checkPuzzleClear());
 		}
 		// ドラッグされている間、位置をマウスに追従させる
 		else {
@@ -53,6 +53,11 @@ void Game::update()
 			}
 			++idx;
 		}
+	}
+
+	if (not m_clearTransition.isZero()) {
+		m_deltaT = 0;
+		changeScene(State::Level, 5000);
 	}
 
 	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
@@ -90,8 +95,8 @@ void Game::draw() const
 				continue;
 			}
 			const Array<Polygon> intersection_polygon = Geometry2D::And(
-				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2.5 } + getData().correctPositions[i]),
-				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2.5 } + getData().correctPositions[j])
+				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2 } + getData().correctPositions[i]),
+				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2 } + getData().correctPositions[j])
 			);
 			for (const auto& polygon : intersection_polygon)
 			{
@@ -108,10 +113,12 @@ void Game::draw() const
 	// 左側のお手本パネル
 	//m_answerViewport.draw(Palette::Black);
 
+
+
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 		for (const auto&& [i, piece] : IndexedRef(m_pieces)) {
-			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1 , g * 2.5 } + getData().correctPositions[i]).draw(piece.color);
+			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1 , g * 2 } + getData().correctPositions[i]).draw(piece.color);
 		}
 	}
 }
@@ -132,21 +139,23 @@ bool Game::checkPuzzleClear() const {
 	}
 	for (int i = 0; i < rerativePositions.size(); ++i) {
 		if (rerativePositions[i] != getData().correctPositions[i]) {
-			Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
+			//Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
 			return false;
 		}
 	}
-	Print << U"Puzzle cleared!";
+	//Print << U"Puzzle cleared!";
+	//const Audio audio{ U"audio/clear.mp3" };
+	//audio.play();
 	return true;
 };
 
 void Game::updateFadeIn(double t) {
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
-		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (3 * t * t));
+		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (2 * t));
 	}
 	//m_answerViewport.moveBy((m_answerViewportDest - m_answerViewportOrig) * (t - m_deltaT) * (3 * t * t));
-	ClearPrint();
-	Print << t - m_deltaT;
+	//ClearPrint();
+	//Print << t - m_deltaT;
 	m_deltaT = t;
 }
 
@@ -155,9 +164,10 @@ void Game::drawFadeIn(double t) const {
 }
 
 void Game::updateFadeOut(double t) {
-	for (auto& piece : m_pieces) {
-		piece.poly.moveBy(Vec2{ 0.0, 1000.0 * t * Scene::DeltaTime() });
+	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
+		piece.poly.moveBy((piece.origPos - piece.destPos ) * (t - m_deltaT) * (3 * t * t));
 	}
+	m_deltaT = t;
 }
 
 void Game::drawFadeOut(double t) const {
