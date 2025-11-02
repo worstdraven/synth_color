@@ -11,7 +11,7 @@ Game::Game(const InitData& init)
 		piece.poly.moveBy(-m_pieces[i].poly.centroid() + angle * radius * 7 + m_puzzleViewportDest);
 	}
 
-	m_answerViewport.setCenter(m_answerViewportOrig);
+	//m_answerViewport.setCenter(m_answerViewportOrig);
 }
 
 Game::~Game() {
@@ -81,23 +81,54 @@ void Game::draw() const
 
 		for (const auto& piece : m_pieces) {
 			piece.draw();
+			piece.poly.drawFrame(2, ColorF{ 47.0 / 255.0 });
 		}
 	}
+
+	Polygon subedView = m_answerViewport.asPolygon(30);
 
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
 		for (int j = i + 1; j < m_pieces.size(); ++j) {
-			const Array<Polygon> intersection_polygon = Geometry2D::And(m_pieces[i].poly, m_pieces[j].poly);
+			const Array<Polygon> intersection_polygon = Geometry2D::And(
+				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2.5 } + getData().correctPositions[i]),
+				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1, g * 2.5 } + getData().correctPositions[j])
+			);
 			for (const auto& polygon : intersection_polygon)
 			{
-				// 共通部分を黒で描画
-				polygon.drawFrame(2, Palette::Black);
+				// 共通部分を黒縁で描画
+				//polygon.drawFrame(2, ColorF{ 47.0 / 255.0 });
+				subedView = Geometry2D::Subtract(subedView, polygon)[0];
 			}
 		}
 	}
 
+	subedView.draw(Palette::Black);
+	//subedView.drawWireframe(2, Palette::Gray).draw(Palette::Lightgray);
+
 	// 左側のお手本パネル
-	m_answerViewport.draw(Palette::Black);
+	//m_answerViewport.draw(Palette::Black);
+
+	{
+		const ScopedRenderStates2D blend{ BlendState::Subtractive };
+		for (const auto&& [i, piece] : IndexedRef(m_pieces)) {
+			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - Vec2{ g * 1 , g * 2.5 } + getData().correctPositions[i]).draw(piece.color);
+		}
+	}
+
+	// 任意の2つのピースの組み合わせを走査
+	//for (int i = 0; i < m_pieces.size() - 1; ++i) {
+	//	for (int j = i + 1; j < m_pieces.size(); ++j) {
+	//		const Array<Polygon> intersection_polygon = Geometry2D::And(m_pieces[i].poly, m_pieces[j].poly);
+	//		for (const auto& polygon : intersection_polygon)
+	//		{
+	//			// 共通部分を黒で描画
+	//			polygon.drawFrame(2, Palette::Black);
+	//			subedView = Geometry2D::Subtract(subedView, polygon.moved)[0];
+	//		}
+	//	}
+	//}
+
 }
 
 bool Game::checkPuzzleClear() const {
@@ -128,7 +159,7 @@ void Game::updateFadeIn(double t) {
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (3 * t * t));
 	}
-	m_answerViewport.moveBy((m_answerViewportDest - m_answerViewportOrig) * (t - m_deltaT) * (3 * t * t));
+	//m_answerViewport.moveBy((m_answerViewportDest - m_answerViewportOrig) * (t - m_deltaT) * (3 * t * t));
 	ClearPrint();
 	Print << t - m_deltaT;
 	m_deltaT = t;

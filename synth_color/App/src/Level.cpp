@@ -66,7 +66,7 @@ void Level::update() {
 		if (button.poly.leftClicked()) {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
-			setLevelDesign(1);
+			setLevelDesign(i + 1);
 			changeScene(State::Game, (DisappearDuration + EffectDuration) * 2);
 		}
 	}
@@ -92,16 +92,33 @@ void Level::setLevelDesign(int level) {
 	const int g = getData().gridSize;
 
 	// レベルデザインの設定
-	
+
 	switch (level) {
 	case 1:
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveMagenta };
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveYellow };
 		getData().correctPositions << Point{ 0, 0 };
-		getData().correctPositions << Point{ 2 * g, 2 * g };
-		getData().correctPositions << Point{ 4 * g, 4 * g };
+		getData().correctPositions << Point{ 2 * g, 0 * g };
+		getData().correctPositions << Point{ 1 * g, 2 * g };
+		break;
+	case 2:
+		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
+		getData().correctPositions << Point{ 0, 0 };
+		getData().correctPositions << Point{ 2 * g, 3 * g };
+		getData().correctPositions << Point{ 1 * g, 0 * g };
+		break;
+	case 3:
+		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
+		getData().correctPositions << Point{ 0, 0 };
+		getData().correctPositions << Point{ 2 * g, 3 * g };
+		getData().correctPositions << Point{ 1 * g, 0 * g };
 		break;
 	}
+
 
 }
