@@ -90,6 +90,11 @@ void Level::draw() const {
 		//m_pieceButtons[i].draw();
 		m_pieceButtons[i].poly.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
 		FontAsset(U"Bold")(i + 1).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
+		if (getData().isCleared[i]) {
+			Shape2D::Star(getData().gridSize * 0.8, center - Vec2{ getData().gridSize * 1.6, getData().gridSize * 1.6 })
+				.draw(ColorF{1.0, 1.0, 0.0, m_changeSceneTransition.value()})
+				.drawFrame(2, ColorF{ 47.0 / 255.0, m_changeSceneTransition.value() });
+		}
 	}
 }
 
