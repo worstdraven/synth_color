@@ -41,6 +41,8 @@ struct GameData
 	}
 
 	int currentLevel = -1;
+
+	Array<bool> isCleared;
 };
 
 static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };

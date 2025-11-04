@@ -57,7 +57,10 @@ void Game::update()
 	}
 
 	if (not m_clearTransition.isZero()) {
+		// トランジション中のデルタ時間を初期化
 		m_deltaT = 0;
+		// クリア情報を記録
+		getData().isCleared[getData().currentLevel] = true;
 		changeScene(State::Level, 5000);
 	}
 
@@ -72,7 +75,7 @@ void Game::draw() const
 {
 	const int g = getData().gridSize;
 
-	FontAsset(U"Bold")(U"ステージ {}"_fmt(getData().currentLevel))
+	FontAsset(U"Bold")(U"ステージ {}"_fmt(getData().currentLevel + 1))
 		.draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), ColorF{0.0, m_fadeInTransition.value()});
 
 	// グリッドの描画
