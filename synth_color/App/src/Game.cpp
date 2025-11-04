@@ -105,20 +105,12 @@ void Game::draw() const
 			);
 			for (const auto& polygon : intersection_polygon)
 			{
-				// 共通部分を黒縁で描画
-				//polygon.drawFrame(2, ColorF{ 47.0 / 255.0 });
 				subedView = Geometry2D::Subtract(subedView, polygon)[0];
 			}
 		}
 	}
 
 	subedView.draw(Palette::Black);
-	//subedView.drawWireframe(2, Palette::Gray).draw(Palette::Lightgray);
-
-	// 左側のお手本パネル
-	//m_answerViewport.draw(Palette::Black);
-
-
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
