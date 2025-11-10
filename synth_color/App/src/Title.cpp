@@ -5,7 +5,7 @@ Title::Title(const InitData& init)
 {
 	int32 w = Scene::Width();
 	int32 h = Scene::Height();
-	int16& g = getData().gridSize;
+	int16 g = getData().fetchGridSize();
 
 	m_pieces << Piece{ Vec2{ w * 0.28, h * 0.97 }, 3.1 * g, ColorF{ 0.0, 1.0, 0.0, 1.0 } };
 	m_pieces << Piece{
@@ -63,8 +63,9 @@ void Title::update()
 	{
 		System::Exit();
 	}
-	else if (SimpleGUI::Button(U"change resolution", Vec2{ Width() * 0.90, Height() * 0.03 })) {
+	else if (SimpleGUI::Button(U"change resolution", Vec2{ Width() * 0.85, Height() * 0.03 })) {
 		Window::SetFullscreen(Window::GetState().fullscreen ? false : true);
+		changeScene(State::Title, 1);
 	}
 	else if (Scene::Rect().leftClicked())
 	{
