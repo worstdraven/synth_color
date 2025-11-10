@@ -63,6 +63,9 @@ void Title::update()
 	{
 		System::Exit();
 	}
+	else if (SimpleGUI::Button(U"change resolution", Vec2{ Width() * 0.90, Height() * 0.03 })) {
+		Window::SetFullscreen(Window::GetState().fullscreen ? false : true);
+	}
 	else if (Scene::Rect().leftClicked())
 	{
 		changeScene(State::Level, ChangeSceneDuration);
