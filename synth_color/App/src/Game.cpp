@@ -88,7 +88,7 @@ void Game::draw() const
 		}
 	}
 
-	Polygon subedView = m_answerViewport.asPolygon(30);
+	m_answerViewport.draw(Palette::Black);
 
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
@@ -102,20 +102,10 @@ void Game::draw() const
 			);
 			for (const auto& polygon : intersection_polygon)
 			{
-				// 共通部分を黒縁で描画
-				//polygon.drawFrame(2, ColorF{ 47.0 / 255.0 });
-				subedView = Geometry2D::Subtract(subedView, polygon)[0];
+				polygon.draw((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color));
 			}
 		}
 	}
-
-	subedView.draw(Palette::Black);
-	//subedView.drawWireframe(2, Palette::Gray).draw(Palette::Lightgray);
-
-	// 左側のお手本パネル
-	//m_answerViewport.draw(Palette::Black);
-
-
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
