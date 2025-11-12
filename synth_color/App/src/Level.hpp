@@ -37,7 +37,9 @@ private:
 
 	int m_selectedButtonIndex = -1;
 
-	static constexpr Duration DisappearDuration = 0.5s, EffectDuration = 1.4s;
+
+	static constexpr Duration DisappearDuration = LevelToGameDuration / 2.0 * 0.2;
+	static constexpr Duration EffectDuration = LevelToGameDuration / 2.0 * 0.8;
 
 	Effect m_effect;
 
