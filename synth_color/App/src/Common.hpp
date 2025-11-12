@@ -31,6 +31,11 @@ struct GameData
 
 	int16 gridSize = Width() / 25;
 
+	int16 fetchGridSize() {
+		gridSize = Width() / 25;
+		return gridSize;
+	}
+
 	void drawGrid() const {
 		Scene::SetBackground(Palette::White);
 		for (int i = 0; i < Width(); i += gridSize) {
