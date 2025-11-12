@@ -20,8 +20,8 @@ struct Piece {
 		, color{ color } {
 	}
 
-	inline void draw() const {
-		poly.draw(color);
+	inline void draw(double alpha = 1.0) const {
+		poly.draw(color.withA(alpha * 255)).drawFrame(2, Palette::Dimgray.withA(alpha * 255));
 	}
 
 	inline Vec2 getPrimaryPos() const {
@@ -30,5 +30,5 @@ struct Piece {
 
 	Polygon poly;
 	Color color;
-	Vec2 origPos, destPos;
+	Vec2 origPos{ 0.0, 0.0 }, destPos{ 0.0, 0.0 };
 };

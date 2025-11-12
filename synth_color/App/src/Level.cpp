@@ -14,32 +14,21 @@ struct ClickedButtonEffect : IEffect
 		m_coloredButtons << Piece{ pushedButton.poly, SubtractiveCyan };
 		m_coloredButtons << Piece{ pushedButton.poly, SubtractiveMagenta };
 		m_coloredButtons << Piece{ pushedButton.poly, SubtractiveYellow };
-		//Print << U"Effect created:";
 	};
 	bool update(double timeSec) override
 	{
-		if (Duration{ timeSec } < m_delay) {
-			for (const auto& button : m_coloredButtons) {
-				{
-					const ScopedRenderStates2D blend{ BlendState::Subtractive };
-					button.draw();
-				}
-				FontAsset(U"Bold")(m_index).drawAt(button.poly.centroid(), ColorF{ 1.0 });
-			}
-			return true;
-		}
 		for (auto&& [i, button] : IndexedRef(m_coloredButtons)) {
-			const double angle = 120_deg * i;
-			const double radius = Scene::Width() / 4.5 * std::pow(timeSec, 4.3);
-			button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } *Scene::DeltaTime());
+			if (Duration{ timeSec } > m_delay) {
+				const double angle = 120_deg * i;
+				const double radius = Scene::Width() / 4.5 * std::pow(timeSec, 4.3);
+				button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } *Scene::DeltaTime());
+			}
 			{
 				const ScopedRenderStates2D blend{ BlendState::Subtractive };
 				button.draw();
 			}
-			FontAsset(U"Bold")(m_index).drawAt(button.poly.centroid(), ColorF{ 1.0 });
+			FontAsset(U"Bold")(m_index).drawAt(button.poly.centroid(), Palette::White);
 		}
-		//ClearPrint();
-		//Print << timeSec;
 		return Duration{ timeSec } < m_duration + m_delay;
 	}
 };
@@ -47,17 +36,16 @@ struct ClickedButtonEffect : IEffect
 Level::Level(const InitData& init)
 	: IScene{ init }
 {
-	const Array<ColorF>& colors = {
-		SubtractiveCyan,
-		SubtractiveMagenta,
-		SubtractiveYellow
-	};
-
+	// ボタンの位置を初期化
 	for (int i = 0; i < 8; ++i) {
 		const Vec2 center = Vec2{ Scene::Width() / 8.0 * (1 + (i % 4) * 2),	 Scene::Height() / 3.0 * (1 + (i / 4)) };
-		m_pieceButtons << Piece{ center, getData().gridSize * 2.2, ColorF{ 1.0 } };
+		m_pieceButtons << Piece{ center, getData().gridSize * 2.2, Palette::White };
 	}
 
+	// GameStruct内のクリア情報配列を初期化
+	if (getData().isCleared.size() == 0) {
+		getData().isCleared = Array<bool>(8, false);
+	}
 }
 
 void Level::update() {
@@ -66,7 +54,7 @@ void Level::update() {
 		if (button.poly.leftClicked()) {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
-			setLevelDesign(i + 1);
+			setLevelDesign(i);
 			changeScene(State::Game, (DisappearDuration + EffectDuration) * 2);
 		}
 	}
@@ -82,9 +70,14 @@ void Level::draw() const {
 			continue;
 		}
 		const Vec2 center = Vec2{ Scene::Width() / 8.0 * (1 + (i % 4) * 2),	 Scene::Height() / 3.0 * (1 + (i / 4)) };
-		//m_pieceButtons[i].draw();
 		m_pieceButtons[i].poly.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
 		FontAsset(U"Bold")(i + 1).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
+		// クリア済みステージにマークを付ける
+		if (getData().isCleared[i]) {
+			Shape2D::Star(getData().gridSize * 0.8, center - Vec2{ getData().gridSize * 1.6, getData().gridSize * 1.6 })
+				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
+				.drawFrame(2, ColorF{ 47.0 / 255.0, m_changeSceneTransition.value() });
+		}
 	}
 }
 
@@ -96,7 +89,7 @@ void Level::setLevelDesign(int level) {
 	getData().currentLevel = level;
 
 	switch (level) {
-	case 1:
+	case 0:
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveMagenta };
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveYellow };
@@ -105,6 +98,16 @@ void Level::setLevelDesign(int level) {
 		getData().correctPositions << Point{ 1 * g, 2 * g };
 
 		getData().correctCenter = Point{ g * 1, g * 2 };
+		break;
+	case 1:
+		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
+		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
+		getData().correctPositions << Point{ 0, 0 };
+		getData().correctPositions << Point{ 2 * g, 3 * g };
+		getData().correctPositions << Point{ 1 * g, 0 * g };
+
+		getData().correctCenter = Point{ g * 2, g * 2 };
 		break;
 	case 2:
 		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
@@ -117,16 +120,6 @@ void Level::setLevelDesign(int level) {
 		getData().correctCenter = Point{ g * 2, g * 2 };
 		break;
 	case 3:
-		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
-		getData().correctPositions << Point{ 0, 0 };
-		getData().correctPositions << Point{ 2 * g, 3 * g };
-		getData().correctPositions << Point{ 1 * g, 0 * g };
-
-		getData().correctCenter = Point{ g * 2, g * 2 };
-		break;
-	case 4:
 		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, g * 5}, Vec2{0, g * 5} }, SubtractiveMagenta };
 		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{0, g * 5}, Vec2{-g * 3, g * 5} }, SubtractiveMagenta };
 		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
@@ -145,9 +138,4 @@ void Level::setLevelDesign(int level) {
 		getData().correctCenter = Point{ g * 3, g * 3 };
 		break;
 	}
-	for (auto& Points : getData().correctPositions) {
-
-	}
-
-
 }

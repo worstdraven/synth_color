@@ -93,8 +93,7 @@ void Title::draw() const
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 		for (const auto& piece : m_pieces) {
-			piece.poly.draw(ColorF{ piece.color.r / 255.0, piece.color.g / 255.0, piece.color.b / 255.0, 1.0 - m_changeSceneTransition.value() });
-			piece.poly.drawFrame(2, ColorF{ 47.0 / 255.0, 1 - m_changeSceneTransition.value() });
+			piece.draw(1 - m_changeSceneTransition.value());
 		}
 	}
 }
