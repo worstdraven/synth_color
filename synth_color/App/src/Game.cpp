@@ -76,7 +76,7 @@ void Game::draw() const
 	const int g = getData().gridSize;
 
 	FontAsset(U"Bold")(U"ステージ {}"_fmt(getData().currentLevel + 1))
-		.draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), ColorF{0.0, m_fadeInTransition.value()});
+		.draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), ColorF{ 0.0, m_fadeInTransition.value() });
 
 	// グリッドの描画
 	getData().drawGrid();
@@ -91,7 +91,7 @@ void Game::draw() const
 		}
 	}
 
-	Polygon subedView = m_answerViewport.asPolygon(30);
+	m_answerViewport.draw(Palette::Black);
 
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
@@ -105,12 +105,10 @@ void Game::draw() const
 			);
 			for (const auto& polygon : intersection_polygon)
 			{
-				subedView = Geometry2D::Subtract(subedView, polygon)[0];
+				polygon.draw((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color));
 			}
 		}
 	}
-
-	subedView.draw(Palette::Black);
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
@@ -165,7 +163,7 @@ void Game::updateFadeOut(double t) {
 	m_clearTransition.update(true);
 	m_fadeInTransition.update(false);
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
-		piece.poly.moveBy((piece.origPos - piece.destPos ) * (t - m_deltaT) * (3 * t * t));
+		piece.poly.moveBy((piece.origPos - piece.destPos) * (t - m_deltaT) * (3 * t * t));
 	}
 	m_deltaT = t;
 }
