@@ -49,21 +49,7 @@ Title::~Title() {}
 
 void Title::update()
 {
-	// ボタンの更新
-	{
-		m_exitTransition.update(m_exitButton.mouseOver());
-
-		if (m_exitButton.mouseOver())
-		{
-			Cursor::RequestStyle(CursorStyle::Hand);
-		}
-	}
-	// ボタンのクリック処理
-	if (m_exitButton.leftClicked()) // 終了
-	{
-		System::Exit();
-	}
-	else if (SimpleGUI::Button(U"change resolution", Vec2{ Width() * 0.85, Height() * 0.03 })) {
+	if (SimpleGUI::Button(U"change resolution", Vec2{ Width() * 0.85, Height() * 0.03 })) {
 		Window::SetFullscreen(Window::GetState().fullscreen ? false : true);
 		changeScene(State::Title, 1);
 	}
