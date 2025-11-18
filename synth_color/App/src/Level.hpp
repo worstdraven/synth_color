@@ -43,5 +43,5 @@ private:
 
 	Effect m_effect;
 
-	Transition m_changeSceneTransition{ DisappearDuration, DisappearDuration };
+	Transition m_changeSceneTransition{ TitleToLevelDuration / 2.0, LevelToGameDuration / 2.0 };
 };
