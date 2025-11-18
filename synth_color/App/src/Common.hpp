@@ -62,4 +62,9 @@ static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };
 static constexpr ColorF SubtractiveMagenta = ColorF{ 0.0, 1.0, 0.0 };
 static constexpr ColorF SubtractiveYellow = ColorF{ 0.0, 0.0, 1.0 };
 
+static constexpr Vec2 ratioVec(double x, double y) {
+	// 位置を0から1の割合で指定して、画面内の位置を返す。
+	return Vec2{ Width() * x, Height() * y };
+}
+
 using App = SceneManager<State, GameData>;
