@@ -50,6 +50,14 @@ struct GameData
 	Array<bool> isCleared;
 };
 
+// 画面遷移時間
+static constexpr Duration TitleFadeInDuration{ 0.4s };
+static constexpr Duration TitleToLevelDuration{ 2.0s };
+static constexpr Duration LevelToGameDuration{ 3.5s };
+static constexpr Duration GameToGameDuration{ 3.0s };
+static constexpr Duration GameToLevelDuration{ 3.0s };
+
+// 減法混色の三原色
 static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };
 static constexpr ColorF SubtractiveMagenta = ColorF{ 0.0, 1.0, 0.0 };
 static constexpr ColorF SubtractiveYellow = ColorF{ 0.0, 0.0, 1.0 };

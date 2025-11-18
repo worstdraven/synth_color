@@ -20,7 +20,7 @@ void Main()
 	manager.add<Game>(State::Game);
 	manager.add<Ranking>(State::Ranking);
 
-	manager.init(State::Title, 0.5s);
+	manager.init(State::Title, TitleFadeInDuration);
 
 	Scene::SetBackground(Palette::White);
 

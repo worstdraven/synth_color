@@ -61,14 +61,12 @@ void Game::update()
 		m_deltaT = 0;
 		// クリア情報を記録
 		getData().isCleared[getData().currentLevel] = true;
-		changeScene(State::Level, 5000);
+		changeScene(State::Level, GameToLevelDuration);
 	}
 
 	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
-		changeScene(State::Level, 1000);
+		changeScene(State::Level, GameToLevelDuration);
 	}
-
-
 }
 
 void Game::draw() const

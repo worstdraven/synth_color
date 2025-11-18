@@ -55,7 +55,7 @@ void Level::update() {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
 			setLevelDesign(i);
-			changeScene(State::Game, (DisappearDuration + EffectDuration) * 2);
+			changeScene(State::Game, LevelToGameDuration);
 		}
 	}
 
