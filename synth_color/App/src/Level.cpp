@@ -20,7 +20,7 @@ struct ClickedButtonEffect : IEffect
 		for (auto&& [i, button] : IndexedRef(m_coloredButtons)) {
 			if (Duration{ timeSec } > m_delay) {
 				const double angle = 120_deg * i;
-				const double radius = Scene::Width() / 4.5 * std::pow(timeSec, 4.3);
+				const double radius = Width() / 4.5 * std::pow(timeSec, 4.3);
 				button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } *Scene::DeltaTime());
 			}
 			{
@@ -36,9 +36,11 @@ struct ClickedButtonEffect : IEffect
 Level::Level(const InitData& init)
 	: IScene{ init }
 {
+	getData().fetchGridSize();
+
 	// ボタンの位置を初期化
 	for (int i = 0; i < 8; ++i) {
-		const Vec2 center = Vec2{ Scene::Width() / 8.0 * (1 + (i % 4) * 2),	 Scene::Height() / 3.0 * (1 + (i / 4)) };
+		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
 		m_pieceButtons << Piece{ center, getData().gridSize * 2.2, Palette::White };
 	}
 
@@ -50,7 +52,7 @@ Level::Level(const InitData& init)
 
 void Level::update() {
 	for (auto&& [i, button] : IndexedRef(m_pieceButtons)) {
-		const Vec2 center = Vec2{ Scene::Width() / 8.0 * (1 + (i % 4) * 2),	 Scene::Height() / 3.0 * (1 + (i / 4)) };
+		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
 		if (button.poly.leftClicked()) {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
@@ -63,18 +65,19 @@ void Level::update() {
 }
 
 void Level::draw() const {
+	const int16 g = getData().fetchGridSize();
 	getData().drawGrid();
 
 	for (int i = 0; i < 8; ++i) {
 		if (i == m_selectedButtonIndex) {
 			continue;
 		}
-		const Vec2 center = Vec2{ Scene::Width() / 8.0 * (1 + (i % 4) * 2),	 Scene::Height() / 3.0 * (1 + (i / 4)) };
+		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
 		m_pieceButtons[i].poly.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
 		FontAsset(U"Bold")(i + 1).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
 		// クリア済みステージにマークを付ける
 		if (getData().isCleared[i]) {
-			Shape2D::Star(getData().gridSize * 0.8, center - Vec2{ getData().gridSize * 1.6, getData().gridSize * 1.6 })
+			Shape2D::Star(g * 0.8, center - Vec2{ g * 1.6, g * 1.6 })
 				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
 				.drawFrame(2, ColorF{ 47.0 / 255.0, m_changeSceneTransition.value() });
 		}
@@ -82,7 +85,7 @@ void Level::draw() const {
 }
 
 void Level::setLevelDesign(int level) {
-	const int g = getData().gridSize;
+	const int g = getData().fetchGridSize();
 
 	// レベルデザインの設定
 

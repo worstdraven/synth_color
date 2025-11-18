@@ -74,7 +74,7 @@ void Game::draw() const
 	const int g = getData().gridSize;
 
 	FontAsset(U"Bold")(U"ステージ {}"_fmt(getData().currentLevel + 1))
-		.draw(48, Arg::bottomLeft(Scene::Width() * .68, Scene::Height() * .14), ColorF{ 0.0, m_fadeInTransition.value() });
+		.draw(48, Arg::bottomLeft(Width() * 0.68, Height() * 0.14), ColorF{ 0.0, m_fadeInTransition.value() });
 
 	// グリッドの描画
 	getData().drawGrid();

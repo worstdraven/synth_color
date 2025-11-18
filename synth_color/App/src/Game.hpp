@@ -1,9 +1,6 @@
 ﻿# pragma once
 # include "Common.hpp"
 
-using Scene::Width;
-using Scene::Height;
-
 // ゲームシーン
 class Game : public App::Scene
 {
@@ -35,12 +32,13 @@ private:
 	Array<Piece>& m_pieces;
 
 	Rect m_puzzleViewport{
-		static_cast<int>(Scene::Width() * 0.45), static_cast<int>(Scene::Height() * 0.15),
-		static_cast<int>(Scene::Width() * 0.53), static_cast<int>(Scene::Height() * 0.83)
+		ratioVec(0.45, 0.15).asPoint(),
+		ratioVec(0.53, 0.83).asPoint()
 	};
 	Vec2 m_puzzleViewportDest{ m_puzzleViewport.center()};
 
-	Circle m_answerViewport{ getData().gridSize * 6.0, getData().gridSize * 10.0 , getData().gridSize * 5.5 };
+	//Circle m_answerViewport{ getData().gridSize * 6.0, getData().gridSize * 10.0 , getData().gridSize * 5.5 };
+	Circle m_answerViewport{ ratioVec(0.24, 0.54) , getData().gridSize * 5.5};
 	Vec2 m_answerViewportDest{ m_answerViewport.center };
 	Vec2 m_answerViewportOrig{ - m_answerViewport.r, Height() + m_answerViewport.r};
 

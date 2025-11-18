@@ -3,38 +3,36 @@
 Title::Title(const InitData& init)
 	: IScene{ init }
 {
-	int32 w = Scene::Width();
-	int32 h = Scene::Height();
 	int16 g = getData().fetchGridSize();
 
-	m_pieces << Piece{ Vec2{ w * 0.28, h * 0.97 }, 3.1 * g, ColorF{ 0.0, 1.0, 0.0, 1.0 } };
+	m_pieces << Piece{ ratioVec(0.28, 0.97), 3.1 * g, SubtractiveMagenta };
 	m_pieces << Piece{
-		Array<Vec2>{ Vec2{ w * 0.36, h * 0.76 }, Vec2{ w * 0.46, h * 0.92 }, Vec2{ w * 0.23, h * 1.1 } },
-		ColorF{ 0.0, 0.0, 1.0, 1.0 }
+		Array<Vec2>{ ratioVec(0.36, 0.76), ratioVec(0.46, 0.92), ratioVec(0.23, 1.1) },
+		SubtractiveYellow
 	};
 	Piece temp = Piece{
-		Polygon { { Vec2{ w * 0.03, h * 0.76 }, Vec2{ w * 0.20, h * 0.76 }, Vec2{ w * 0.20, h * 1.1 }, { w * 0.03, h * 1.1 } } },
-		ColorF{ 1.0, 0.0, 0.0, 1.0 }
+		Polygon { { ratioVec(0.03, 0.76), ratioVec(0.20, 0.76), ratioVec(0.20, 1.1), ratioVec(0.03, 1.1) } },
+		SubtractiveCyan
 	};
 	temp.poly.rotateAt(temp.poly.centroid(), -19_deg);
 	m_pieces << temp;
 
 	// right yellow circle
 	m_pieces << Piece{
-		Circle{ Vec2{ w * 0.7, h * 0.9} , g * 1.8 }.asPolygon(30),
-		ColorF{ 0.0, 0.0, 1.0, 1.0 }
+		Circle{ ratioVec(0.7, 0.9) , g * 1.8 }.asPolygon(30),
+		SubtractiveYellow
 	};
 
 	// right cyantriangle
 	m_pieces << Piece{
-		Array<Vec2>{ Vec2{ w * 0.76, h * 0.78 }, Vec2{ w * 0.87, h * 1.02 }, Vec2{ w * 0.62, h * 0.92 } },
-		ColorF{ 1.0, 0.0, 0.0, 1.0 }
+		Array<Vec2>{ ratioVec(0.76, 0.78), ratioVec(0.87, 1.02), ratioVec(0.62, 0.92) },
+		SubtractiveCyan
 	};
 
 	// right magenta rectangle
 	temp = Piece{
-		Polygon { { Vec2{ w * 0.82, h * 0.79 }, Vec2{ w * 0.93	, h * 0.79 }, Vec2{ w * 0.93, h * 1.1 }, { w * 0.82, h * 1.1 } } },
-		ColorF{ 0.0, 1.0, 0.0, 1.0 }
+		Polygon { { ratioVec(0.82, 0.79), ratioVec(0.93	,0.79), ratioVec(0.93, 1.1), ratioVec(0.82, 1.1) } },
+		SubtractiveMagenta
 	};
 	temp.poly.rotateAt(temp.poly.centroid(), 80_deg);
 	m_pieces << temp;
@@ -49,7 +47,7 @@ Title::~Title() {}
 
 void Title::update()
 {
-	if (SimpleGUI::Button(U"change resolution", Vec2{ Width() * 0.85, Height() * 0.03 })) {
+	if (SimpleGUI::Button(U"change resolution", ratioVec(0.85, 0.03))) {
 		Window::SetFullscreen(Window::GetState().fullscreen ? false : true);
 		changeScene(State::Title, 1);
 	}
@@ -75,10 +73,10 @@ void Title::draw() const
 	getData().drawGrid();
 
 	// タイトル描画
-	m_titleLogo.scaled(0.4).drawAt(Scene::Width() / 2.11, Scene::Height() / 2.2, ColorF{ 1.0 , 1.0 - m_changeSceneTransition.value() });
+	m_titleLogo.scaled(0.4 * Width() / 800).drawAt(ratioVec(0.473, 0.454), ColorF{ 1.0 , 1.0 - m_changeSceneTransition.value() });
 
 	FontAsset(U"CommonFont")(U"- クリックしてスタート -")
-		.drawAt(Scene::Width() / 2.0, Scene::Height() * 0.65, ColorF{ 0.0 , 1.0 - m_changeSceneTransition.value() });
+		.drawAt(ratioVec(0.5, 0.65), ColorF{0.0 , 1.0 - m_changeSceneTransition.value()});
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
