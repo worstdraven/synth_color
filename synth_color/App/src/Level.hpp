@@ -31,8 +31,6 @@ public:
 
 
 private:
-	void setLevelDesign(int level);
-
 	Array<Piece> m_pieceButtons;
 
 	int m_selectedButtonIndex = -1;

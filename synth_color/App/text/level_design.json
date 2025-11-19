@@ -1,7 +1,7 @@
 {
   "levels": [
     {
-      "levelId": 1,
+      "levelId": 0,
       "pieces": [
         {
           "shape": "circle",
@@ -33,6 +33,10 @@
           "y": 2
         }
       ],
+      "correctCenter": {
+        "x": 1,
+        "y": 2
+      },
       "swappables": [ 1, 2, 3 ]
     },
     {

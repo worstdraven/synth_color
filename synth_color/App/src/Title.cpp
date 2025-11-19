@@ -41,8 +41,6 @@ Title::Title(const InitData& init)
 	m_periods = { 12.0, 10.0, 14.0, 11.0, 9.4, 10.2 };
 	m_phases = { 1.0, 0.0, 1.0, 2.0, 1.2, 3,2 };
 	m_radiuses = { g / 3.3, g / 3.2, g / 3.0, g / 2.5, g / 3.2, g / 4.4 };
-
-	getData().setLevelDesign(1);
 }
 
 Title::~Title() {}
