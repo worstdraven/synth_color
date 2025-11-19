@@ -17,12 +17,6 @@ enum class State
 // 共有するデータ
 struct GameData
 {
-	// 直前のゲームのスコア
-	int32 lastScore = 0;
-
-	// ハイスコア
-	Array<int32> highScores = { 10, 8, 6, 4, 2 };
-
 	// ピースの配列
 	Array<Piece> pieces;
 
