@@ -1,0 +1,42 @@
+{
+  "levels": [
+    {
+      "levelId": 1,
+      "pieces": [
+        {
+          "shape": "circle",
+          "radius": 2,
+          "color": "cyan"
+        },
+        {
+          "shape": "circle",
+          "radius": 2,
+          "color": "magenta"
+        },
+        {
+          "shape": "circle",
+          "radius": 2,
+          "color": "yellow"
+        }
+      ],
+      "correctPositions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 2
+        }
+      ],
+      "swappables": [ 1, 2, 3 ]
+    },
+    {
+      "levelId": 2
+    }
+  ]
+}

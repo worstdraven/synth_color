@@ -10,8 +10,7 @@ enum class State
 {
 	Title,
 	Level,
-	Game,
-	Ranking,
+	Game
 };
 
 // 共有するデータ
@@ -42,6 +41,15 @@ struct GameData
 	int currentLevel = -1;
 
 	Array<bool> isCleared;
+
+	void setLevelDesign(int level) {
+		const JSON levelJson = JSON::Load(U"text/level_design.json");
+
+		if (not levelJson) {
+			throw Error{ U"Failed to load 'level_design.json'" };
+		}
+
+	};
 };
 
 // 画面遷移時間
