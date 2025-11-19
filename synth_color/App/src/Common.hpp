@@ -13,6 +13,42 @@ enum class State
 	Game
 };
 
+// 再帰的に JSON の要素を表示
+static void ShowObject(const JSON& value)
+{
+	switch (value.getType())
+	{
+	case JSONValueType::Empty:
+		Console << U"empty";
+		break;
+	case JSONValueType::Null:
+		Console << U"null";
+		break;
+	case JSONValueType::Object:
+		for (const auto& object : value)
+		{
+			Console << U"[{}]"_fmt(object.key);
+			ShowObject(object.value);
+		}
+		break;
+	case JSONValueType::Array:
+		for (auto&& [index, object] : value)
+		{
+			ShowObject(object);
+		}
+		break;
+	case JSONValueType::String:
+		Console << value.getString();
+		break;
+	case JSONValueType::Number:
+		Console << value.get<double>();
+		break;
+	case JSONValueType::Bool:
+		Console << value.get<bool>();
+		break;
+	}
+}
+
 // 共有するデータ
 struct GameData
 {
@@ -49,6 +85,21 @@ struct GameData
 			throw Error{ U"Failed to load 'level_design.json'" };
 		}
 
+		JSON selectedLevel = NULL;
+
+		// get selected level json
+		for (auto&& [index, object] : levelJson[U"levels"]) {
+			if (object[U"levelId"] == level) {
+				selectedLevel = object;
+				break;
+			}
+		}
+		if (selectedLevel == NULL) {
+			throw Error{ U"Invalid level select" };
+		}
+
+		for (auto&& [index, object] : selectedLevel[U"pieces"]) {
+		}
 	};
 };
 
