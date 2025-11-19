@@ -150,10 +150,10 @@
     <ClCompile Include="App\src\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App\src\Ranking.cpp">
+    <ClCompile Include="App\src\Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App\src\Level.cpp">
+    <ClCompile Include="App\src\Piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -821,9 +821,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="App\src\Ranking.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="App\src\Title.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -834,6 +831,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="App\src\Level.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="App\src\Piece.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
