@@ -138,6 +138,19 @@ struct GameData
 					getSubtractiveColorF(object[U"color"].getString())
 				};
 			}
+			else if (object[U"shape"] == U"rectangle" || object[U"shape"] == U"triangle") {
+				Array<Vec2> vertices;
+				for (auto&& [vIndex, vObject] : object[U"vertices"]) {
+					vertices << Vec2{
+						gridSize * vObject[0].get<double>(),
+						gridSize * vObject[1].get<double>()
+					};
+				}
+				pieces << Piece{
+					vertices,
+					getSubtractiveColorF(object[U"color"].getString())
+				};
+			}
 			else {
 				throw Error{ U"not supported piece shape" };
 			}
@@ -146,14 +159,14 @@ struct GameData
 		correctPositions.clear();
 		for (auto&& [index, object] : selectedLevel[U"correctPositions"]) {
 			correctPositions << Point{
-				gridSize * object[U"x"].get<int>(),
-				gridSize * object[U"y"].get<int>()
+				gridSize * object[0].get<int>(),
+				gridSize * object[1].get<int>()
 			};
 		}
 
 		correctCenter = Point{
-			gridSize * selectedLevel[U"correctCenter"][U"x"].get<int>(),
-			gridSize * selectedLevel[U"correctCenter"][U"y"].get<int>()
+			gridSize * selectedLevel[U"correctCenter"][0].get<int>(),
+			gridSize * selectedLevel[U"correctCenter"][1].get<int>()
 		};
 	};
 };
