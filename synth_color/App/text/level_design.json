@@ -58,6 +58,84 @@
       ],
       "correctCenter": [ 2, 2 ],
       "swappables": [ 1, 2, 3 ]
+    },
+    {
+      "levelId": 2,
+      "pieces": [
+        {
+          "shape": "triangle",
+          "color": "magenta",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 5 ],
+            [ 0, 5 ]
+          ]
+        },
+        {
+          "shape": "triangle",
+          "color": "magenta",
+          "vertices": [
+            [ 0, 0 ],
+            [ 0, 5 ],
+            [ -3, 5 ]
+          ]
+        },
+        {
+          "shape": "circle",
+          "color": "magenta",
+          "radius": 1
+        },
+        {
+          "shape": "rectangle",
+          "color": "cyan",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 0 ],
+            [ 3, 3 ],
+            [ 0, 3 ]
+          ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "cyan",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 0 ],
+            [ 3, 4 ],
+            [ 0, 4 ]
+          ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "yellow",
+          "vertices": [
+            [ 0, 0 ],
+            [ 1, 0 ],
+            [ 1, 1 ],
+            [ 0, 1 ]
+          ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "yellow",
+          "vertices": [
+            [ 0, 0 ],
+            [ 2, 0 ],
+            [ 2, 2 ],
+            [ 0, 2 ]
+          ]
+        }
+      ],
+      "correctPositions": [
+        [ 0, 0 ],
+        [ 6, 0 ],
+        [ 3, 2 ],
+        [ 0, 2 ],
+        [ 3, 1 ],
+        [ 5, 0 ],
+        [ 0, 0 ]
+      ],
+      "correctCenter": [ 3, 3 ]
     }
   ]
 }
