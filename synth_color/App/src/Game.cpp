@@ -20,6 +20,7 @@ Game::~Game() {
 	m_pieces.clear();
 	getData().pieces.clear();
 	getData().correctPositions.clear();
+	getData().currentLevel++;
 }
 
 void Game::update()
@@ -66,7 +67,6 @@ void Game::update()
 		m_deltaT = 0;
 		// クリア情報を記録
 		getData().isCleared[getData().currentLevel] = true;
-		getData().currentLevel++;
 		changeScene(State::Game, ChangeSceneDuration);
 	}
 
