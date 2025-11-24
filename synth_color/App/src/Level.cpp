@@ -56,7 +56,7 @@ void Level::update() {
 		if (button.poly.leftClicked()) {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
-			getData().setLevelDesign(i);
+			getData().currentLevel = i;
 			changeScene(State::Game, LevelToGameDuration);
 		}
 	}

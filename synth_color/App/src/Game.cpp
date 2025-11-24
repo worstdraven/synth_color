@@ -3,6 +3,8 @@
 Game::Game(const InitData& init)
 	: IScene{ init }, m_pieces{ getData().pieces }
 {
+	getData().loadLevelDesign();
+
 	const double radius = m_puzzleViewport.w / 3.0;
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		const Vec2 angle{ std::sin(360_deg * i / m_pieces.size()) ,std::cos(360_deg * i / m_pieces.size()) };
@@ -16,8 +18,8 @@ Game::~Game() {
 	//Print << U"Game destructor called.";
 	// ピース配列をクリア
 	m_pieces.clear();
+	getData().pieces.clear();
 	getData().correctPositions.clear();
-	getData().currentLevel = -1;
 }
 
 void Game::update()
@@ -61,7 +63,8 @@ void Game::update()
 		m_deltaT = 0;
 		// クリア情報を記録
 		getData().isCleared[getData().currentLevel] = true;
-		changeScene(State::Level, GameToLevelDuration);
+		getData().currentLevel++;
+		changeScene(State::Game, GameToGameDuration);
 	}
 
 	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {

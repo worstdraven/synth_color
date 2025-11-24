@@ -101,11 +101,11 @@ struct GameData
 		}
 	}
 
-	int currentLevel = -1;
-
 	Array<bool> isCleared;
 
-	void setLevelDesign(int level) {
+	int currentLevel = -1;
+
+	void loadLevelDesign() {
 		const JSON levelJson = JSON::Load(U"text/level_design.json");
 		fetchGridSize();
 
@@ -117,7 +117,7 @@ struct GameData
 
 		// get selected level json
 		for (auto&& [index, object] : levelJson[U"levels"]) {
-			if (object[U"levelId"] == level) {
+			if (object[U"levelId"] == currentLevel) {
 				selectedLevel = object;
 				break;
 			}
@@ -125,9 +125,6 @@ struct GameData
 		if (selectedLevel == NULL) {
 			throw Error{ U"Invalid level select" };
 		}
-
-
-		currentLevel = level;
 
 		pieces.clear();
 		correctPositions.clear();
