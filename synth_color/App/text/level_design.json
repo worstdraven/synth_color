@@ -6,23 +6,21 @@
         {
           "shape": "circle",
           "color": "cyan",
-          "radius": 2
+          "radius": 2,
+          "correctPosition": [ 0, 0 ]
         },
         {
           "shape": "circle",
           "color": "magenta",
-          "radius": 2
+          "radius": 2,
+          "correctPosition": [ 2, 0 ]
         },
         {
           "shape": "circle",
           "color": "yellow",
-          "radius": 2
+          "radius": 2,
+          "correctPosition": [ 1, 2 ]
         }
-      ],
-      "correctPositions": [
-        [ 0, 0 ],
-        [ 2, 0 ],
-        [ 1, 2 ]
       ],
       "correctCenter": [ 1, 2 ],
       "swappables": [ 1, 2, 3 ]
@@ -38,23 +36,21 @@
             [ 3, 0 ],
             [ 3, 5 ],
             [ 0, 5 ]
-          ]
+          ],
+          "correctPosition": [ 0, 0 ]
         },
         {
           "shape": "circle",
           "color": "cyan",
-          "radius": 2
+          "radius": 2,
+          "correctPosition": [ 2, 3 ]
         },
         {
           "shape": "circle",
           "color": "magenta",
-          "radius": 1
+          "radius": 1,
+          "correctPosition": [ 1, 0 ]
         }
-      ],
-      "correctPositions": [
-        [ 0, 0 ],
-        [ 2, 3 ],
-        [ 1, 0 ]
       ],
       "correctCenter": [ 2, 2 ],
       "swappables": [ 1, 2, 3 ]
@@ -69,7 +65,8 @@
             [ 0, 0 ],
             [ 3, 5 ],
             [ 0, 5 ]
-          ]
+          ],
+          "correctPosition": [ 0, 0 ]
         },
         {
           "shape": "triangle",
@@ -78,12 +75,14 @@
             [ 0, 0 ],
             [ 0, 5 ],
             [ -3, 5 ]
-          ]
+          ],
+          "correctPosition": [ 6, 0 ]
         },
         {
           "shape": "circle",
           "color": "magenta",
-          "radius": 1
+          "radius": 1,
+          "correctPosition": [ 3, 2 ]
         },
         {
           "shape": "rectangle",
@@ -93,7 +92,8 @@
             [ 3, 0 ],
             [ 3, 3 ],
             [ 0, 3 ]
-          ]
+          ],
+          "correctPosition": [ 0, 2 ]
         },
         {
           "shape": "rectangle",
@@ -103,7 +103,8 @@
             [ 3, 0 ],
             [ 3, 4 ],
             [ 0, 4 ]
-          ]
+          ],
+          "correctPosition": [ 3, 1 ]
         },
         {
           "shape": "rectangle",
@@ -113,7 +114,8 @@
             [ 1, 0 ],
             [ 1, 1 ],
             [ 0, 1 ]
-          ]
+          ],
+          "correctPosition": [ 5, 0 ]
         },
         {
           "shape": "rectangle",
@@ -123,17 +125,9 @@
             [ 2, 0 ],
             [ 2, 2 ],
             [ 0, 2 ]
-          ]
+          ],
+          "correctPosition": [ 0, 0 ]
         }
-      ],
-      "correctPositions": [
-        [ 0, 0 ],
-        [ 6, 0 ],
-        [ 3, 2 ],
-        [ 0, 2 ],
-        [ 3, 1 ],
-        [ 5, 0 ],
-        [ 0, 0 ]
       ],
       "correctCenter": [ 3, 3 ]
     }

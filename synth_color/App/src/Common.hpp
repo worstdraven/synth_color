@@ -130,7 +130,12 @@ struct GameData
 		currentLevel = level;
 
 		pieces.clear();
+		correctPositions.clear();
 		for (auto&& [index, object] : selectedLevel[U"pieces"]) {
+			correctPositions << Point{
+				gridSize * object[U"correctPosition"][0].get<int>(),
+				gridSize * object[U"correctPosition"][1].get<int>()
+			};
 			if (object[U"shape"] == U"circle") {
 				pieces << Piece{
 					Vec2{0, 0},
@@ -154,14 +159,6 @@ struct GameData
 			else {
 				throw Error{ U"not supported piece shape" };
 			}
-		}
-
-		correctPositions.clear();
-		for (auto&& [index, object] : selectedLevel[U"correctPositions"]) {
-			correctPositions << Point{
-				gridSize * object[0].get<int>(),
-				gridSize * object[1].get<int>()
-			};
 		}
 
 		correctCenter = Point{
