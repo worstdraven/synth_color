@@ -77,7 +77,7 @@ void Game::draw() const
 	const int g = getData().gridSize;
 
 	FontAsset(U"Bold")(U"ステージ {}"_fmt(getData().currentLevel + 1))
-		.draw(48, Arg::bottomLeft(Width() * 0.68, Height() * 0.14), ColorF{ 0.0, m_fadeInTransition.value() });
+		.draw(48, Arg::bottomLeft(Width() * 0.68, Height() * 0.14), ColorF{ 0.0, m_changeSceneTransition.value() });
 
 	// グリッドの描画
 	getData().drawGrid();
@@ -103,9 +103,8 @@ void Game::draw() const
 				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]),
 				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[j])
 			);
-			for (const auto& polygon : intersection_polygon)
-			{
-				polygon.draw((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color));
+			for (const auto& polygon : intersection_polygon) {
+				polygon.draw(((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color)).withA(m_changeSceneTransition.value()));
 			}
 		}
 	}
@@ -145,7 +144,7 @@ bool Game::checkPuzzleClear() const {
 };
 
 void Game::updateFadeIn(double t) {
-	m_fadeInTransition.update(true);
+	m_changeSceneTransition.update(true);
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (2 * t));
 	}
@@ -160,8 +159,8 @@ void Game::drawFadeIn(double t) const {
 }
 
 void Game::updateFadeOut(double t) {
+	m_changeSceneTransition.update(false);
 	m_clearTransition.update(true);
-	m_fadeInTransition.update(false);
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		piece.poly.moveBy((piece.origPos - piece.destPos) * (t - m_deltaT) * (3 * t * t));
 	}
