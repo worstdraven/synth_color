@@ -2,7 +2,6 @@
 # include "App/src/Title.hpp"
 # include "App/src/Level.hpp"
 # include "App/src/Game.hpp"
-# include "App/src/Ranking.hpp"
 
 void Main()
 {
@@ -18,7 +17,6 @@ void Main()
 	manager.add<Title>(State::Title);
 	manager.add<Level>(State::Level);
 	manager.add<Game>(State::Game);
-	manager.add<Ranking>(State::Ranking);
 
 	manager.init(State::Title, TitleFadeInDuration);
 

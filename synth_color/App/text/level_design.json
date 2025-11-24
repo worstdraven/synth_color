@@ -1,0 +1,135 @@
+{
+  "levels": [
+    {
+      "levelId": 0,
+      "pieces": [
+        {
+          "shape": "circle",
+          "color": "cyan",
+          "radius": 2,
+          "correctPosition": [ 0, 0 ]
+        },
+        {
+          "shape": "circle",
+          "color": "magenta",
+          "radius": 2,
+          "correctPosition": [ 2, 0 ]
+        },
+        {
+          "shape": "circle",
+          "color": "yellow",
+          "radius": 2,
+          "correctPosition": [ 1, 2 ]
+        }
+      ],
+      "correctCenter": [ 1, 2 ],
+      "swappables": [ 1, 2, 3 ]
+    },
+    {
+      "levelId": 1,
+      "pieces": [
+        {
+          "shape": "rectangle",
+          "color": "yellow",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 0 ],
+            [ 3, 5 ],
+            [ 0, 5 ]
+          ],
+          "correctPosition": [ 0, 0 ]
+        },
+        {
+          "shape": "circle",
+          "color": "cyan",
+          "radius": 2,
+          "correctPosition": [ 2, 3 ]
+        },
+        {
+          "shape": "circle",
+          "color": "magenta",
+          "radius": 1,
+          "correctPosition": [ 1, 0 ]
+        }
+      ],
+      "correctCenter": [ 2, 2 ],
+      "swappables": [ 1, 2, 3 ]
+    },
+    {
+      "levelId": 2,
+      "pieces": [
+        {
+          "shape": "triangle",
+          "color": "magenta",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 5 ],
+            [ 0, 5 ]
+          ],
+          "correctPosition": [ 0, 0 ]
+        },
+        {
+          "shape": "triangle",
+          "color": "magenta",
+          "vertices": [
+            [ 0, 0 ],
+            [ 0, 5 ],
+            [ -3, 5 ]
+          ],
+          "correctPosition": [ 6, 0 ]
+        },
+        {
+          "shape": "circle",
+          "color": "magenta",
+          "radius": 1,
+          "correctPosition": [ 3, 2 ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "cyan",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 0 ],
+            [ 3, 3 ],
+            [ 0, 3 ]
+          ],
+          "correctPosition": [ 0, 2 ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "cyan",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 0 ],
+            [ 3, 4 ],
+            [ 0, 4 ]
+          ],
+          "correctPosition": [ 3, 1 ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "yellow",
+          "vertices": [
+            [ 0, 0 ],
+            [ 1, 0 ],
+            [ 1, 1 ],
+            [ 0, 1 ]
+          ],
+          "correctPosition": [ 5, 0 ]
+        },
+        {
+          "shape": "rectangle",
+          "color": "yellow",
+          "vertices": [
+            [ 0, 0 ],
+            [ 2, 0 ],
+            [ 2, 2 ],
+            [ 0, 2 ]
+          ],
+          "correctPosition": [ 0, 0 ]
+        }
+      ],
+      "correctCenter": [ 3, 3 ]
+    }
+  ]
+}

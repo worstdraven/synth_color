@@ -56,7 +56,7 @@ void Level::update() {
 		if (button.poly.leftClicked()) {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
-			setLevelDesign(i);
+			getData().setLevelDesign(i);
 			changeScene(State::Game, LevelToGameDuration);
 		}
 	}
@@ -81,64 +81,5 @@ void Level::draw() const {
 				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
 				.drawFrame(2, ColorF{ 47.0 / 255.0, m_changeSceneTransition.value() });
 		}
-	}
-}
-
-void Level::setLevelDesign(int level) {
-	const int g = getData().fetchGridSize();
-
-	// レベルデザインの設定
-
-	getData().currentLevel = level;
-
-	switch (level) {
-	case 0:
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveMagenta };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveYellow };
-		getData().correctPositions << Point{ 0, 0 };
-		getData().correctPositions << Point{ 2 * g, 0 * g };
-		getData().correctPositions << Point{ 1 * g, 2 * g };
-
-		getData().correctCenter = Point{ g * 1, g * 2 };
-		break;
-	case 1:
-		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
-		getData().correctPositions << Point{ 0, 0 };
-		getData().correctPositions << Point{ 2 * g, 3 * g };
-		getData().correctPositions << Point{ 1 * g, 0 * g };
-
-		getData().correctCenter = Point{ g * 2, g * 2 };
-		break;
-	case 2:
-		getData().pieces << Piece{ Array<Vec2>{Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 5}, Vec2{0 , g * 5}}, SubtractiveYellow };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 2.0, SubtractiveCyan };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
-		getData().correctPositions << Point{ 0, 0 };
-		getData().correctPositions << Point{ 2 * g, 3 * g };
-		getData().correctPositions << Point{ 1 * g, 0 * g };
-
-		getData().correctCenter = Point{ g * 2, g * 2 };
-		break;
-	case 3:
-		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, g * 5}, Vec2{0, g * 5} }, SubtractiveMagenta };
-		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{0, g * 5}, Vec2{-g * 3, g * 5} }, SubtractiveMagenta };
-		getData().pieces << Piece{ Vec2{ 0, 0 }, g * 1.0, SubtractiveMagenta };
-		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 3}, Vec2{0, g * 3 } }, SubtractiveCyan };
-		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 3, 0}, Vec2{g * 3, g * 4}, Vec2{0, g * 4 } }, SubtractiveCyan };
-		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 1, 0}, Vec2{g * 1, g * 1}, Vec2{0, g * 1 } }, SubtractiveYellow };
-		getData().pieces << Piece{ Array<Vec2>{ Vec2{ 0, 0 }, Vec2{g * 2, 0}, Vec2{g * 2, g * 2}, Vec2{0, g * 2 } }, SubtractiveYellow };
-		getData().correctPositions << Point{ 0, 0 };
-		getData().correctPositions << Point{ g * 6, 0 };
-		getData().correctPositions << Point{ g * 3, g * 2 };
-		getData().correctPositions << Point{ g * 0, g * 2 };
-		getData().correctPositions << Point{ g * 3, g * 1 };
-		getData().correctPositions << Point{ g * 5, g * 0 };
-		getData().correctPositions << Point{ g * 0, g * 0 };
-
-		getData().correctCenter = Point{ g * 3, g * 3 };
-		break;
 	}
 }
