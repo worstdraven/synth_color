@@ -33,10 +33,10 @@ void Game::update()
 			// グリッドにスナップ
 			Vec2 dest{ std::ceil(pos.x / g - 0.5) * g, ::ceil(pos.y / g - 0.5) * g };
 			// ビューポート外に出ないように制限
-			dest.x = std::max(static_cast<double>(m_puzzleViewport.leftX()), dest.x);
-			dest.x = std::min(dest.x, static_cast<double>(m_puzzleViewport.rightX()));
-			dest.y = std::max(static_cast<double>(m_puzzleViewport.topY()), dest.y);
-			dest.y = std::min(dest.y, static_cast<double>(m_puzzleViewport.bottomY()));
+			dest.x = std::max(m_puzzleViewport.leftX(), dest.x);
+			dest.x = std::min(dest.x, m_puzzleViewport.rightX());
+			dest.y = std::max(m_puzzleViewport.topY(), dest.y);
+			dest.y = std::min(dest.y, m_puzzleViewport.bottomY());
 			//Print << dest << pos;
 			m_pieces[m_selectedPieceIndex].poly.moveBy(dest - pos);
 			m_selectedPieceIndex = -1;
@@ -99,11 +99,11 @@ void Game::draw() const
 			if (m_pieces[i].color == m_pieces[j].color) {
 				continue;
 			}
-			const Array<Polygon> intersection_polygon = Geometry2D::And(
+			const Array<Polygon> intersectionPolygons = Geometry2D::And(
 				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]),
 				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[j])
 			);
-			for (const auto& polygon : intersection_polygon) {
+			for (const auto& polygon : intersectionPolygons) {
 				polygon.draw(((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color)).withA(m_changeSceneTransition.value()));
 			}
 		}
@@ -133,7 +133,6 @@ bool Game::checkPuzzleClear() const {
 	}
 	for (int i = 0; i < rerativePositions.size(); ++i) {
 		if (rerativePositions[i] != getData().correctPositions[i]) {
-			//Print << U"Piece " << rerativePositions[i] << getData().correctPositions[i] << U" are incorrect.";
 			return false;
 		}
 	}
@@ -148,14 +147,7 @@ void Game::updateFadeIn(double t) {
 	for (auto&& [i, piece] : IndexedRef(m_pieces)) {
 		piece.poly.moveBy((piece.destPos - piece.origPos) * (t - m_deltaT) * (2 * t));
 	}
-	//m_answerViewport.moveBy((m_answerViewportDest - m_answerViewportOrig) * (t - m_deltaT) * (3 * t * t));
-	//ClearPrint();
-	//Print << t - m_deltaT;
 	m_deltaT = t;
-}
-
-void Game::drawFadeIn(double t) const {
-	draw();
 }
 
 void Game::updateFadeOut(double t) {
@@ -165,8 +157,4 @@ void Game::updateFadeOut(double t) {
 		piece.poly.moveBy((piece.origPos - piece.destPos) * (t - m_deltaT) * (3 * t * t));
 	}
 	m_deltaT = t;
-}
-
-void Game::drawFadeOut(double t) const {
-	draw();
 }
