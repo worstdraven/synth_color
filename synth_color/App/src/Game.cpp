@@ -113,7 +113,7 @@ void Game::draw() const
 			);
 			for (const auto& polygon : intersectionPolygons) {
 				// 共通部分を白で塗りつぶす
-				polygon.draw(((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color)).withA(m_changeSceneTransition.value()));
+				polygon.draw(ColorF(1.0).withA(m_changeSceneTransition.value()));
 			}
 		}
 	}
