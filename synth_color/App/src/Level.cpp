@@ -53,7 +53,7 @@ Level::Level(const InitData& init)
 void Level::update() {
 	for (auto&& [i, button] : IndexedRef(m_pieceButtons)) {
 		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
-		if (button.poly.leftClicked()) {
+		if (button.poly.leftClicked() && m_selectedButtonIndex < 0) {
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
 			getData().currentLevel = i;
