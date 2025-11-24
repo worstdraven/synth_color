@@ -28,8 +28,10 @@ private:
 
 	const Texture m_titleLogo{ U"img/title_logo.png" };
 
-	Transition m_changeSceneTransition{ TitleToLevelDuration / 2.0, 0.0s };
+	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, 0.0s };
 
 	Array<Piece> m_pieces;
 	Array<double> m_periods, m_phases, m_radiuses;
+
+	const Audio m_buttonAudio{ U"audio/button.mp3" };
 };

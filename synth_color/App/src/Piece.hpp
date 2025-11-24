@@ -21,7 +21,7 @@ struct Piece {
 	}
 
 	inline void draw(double alpha = 1.0) const {
-		poly.draw(color.withA(alpha * 255)).drawFrame(2, Palette::Dimgray.withA(alpha * 255));
+		poly.draw(color.withA(alpha * 255)).drawFrame(2, ColorF{82.0 / 255.0, alpha});
 	}
 
 	inline Vec2 getPrimaryPos() const {

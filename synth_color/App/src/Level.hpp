@@ -35,10 +35,12 @@ private:
 
 	int m_selectedButtonIndex = -1;
 
-	static constexpr Duration DisappearDuration = LevelToGameDuration / 2.0 * 0.2;
-	static constexpr Duration EffectDuration = LevelToGameDuration / 2.0 * 0.8;
+	static constexpr Duration DisappearDuration = ChangeSceneDuration / 2.0 * 0.3;
+	static constexpr Duration EffectDuration = ChangeSceneDuration / 2.0 * 0.7;
 
 	Effect m_effect;
 
-	Transition m_changeSceneTransition{ TitleToLevelDuration / 2.0, DisappearDuration };
+	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, DisappearDuration };
+
+	const Audio m_buttonAudio{ U"audio/button.mp3" };
 };

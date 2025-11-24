@@ -20,8 +20,8 @@ struct ClickedButtonEffect : IEffect
 		for (auto&& [i, button] : IndexedRef(m_coloredButtons)) {
 			if (Duration{ timeSec } > m_delay) {
 				const double angle = 120_deg * i;
-				const double radius = Width() / 4.5 * std::pow(timeSec, 4.3);
-				button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } *Scene::DeltaTime());
+				const double radius = Width();
+				button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } * Scene::DeltaTime() * (2.5 * pow(timeSec - m_delay.count(), 1.5)));
 			}
 			{
 				const ScopedRenderStates2D blend{ BlendState::Subtractive };
@@ -53,11 +53,12 @@ Level::Level(const InitData& init)
 void Level::update() {
 	for (auto&& [i, button] : IndexedRef(m_pieceButtons)) {
 		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
-		if (button.poly.leftClicked()) {
+		if (button.poly.leftClicked() && m_selectedButtonIndex < 0) {
+			m_buttonAudio.play();
 			m_selectedButtonIndex = i;
 			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
-			getData().setLevelDesign(i);
-			changeScene(State::Game, LevelToGameDuration);
+			getData().currentLevel = i;
+			changeScene(State::Game, ChangeSceneDuration);
 		}
 	}
 
@@ -79,7 +80,7 @@ void Level::draw() const {
 		if (getData().isCleared[i]) {
 			Shape2D::Star(g * 0.8, center - Vec2{ g * 1.6, g * 1.6 })
 				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
-				.drawFrame(2, ColorF{ 47.0 / 255.0, m_changeSceneTransition.value() });
+				.drawFrame(1, ColorF{ 0.0 }.withA(m_changeSceneTransition.value()));
 		}
 	}
 }

@@ -16,11 +16,15 @@ public:
 
 	void updateFadeIn(double t) override;
 
-	void drawFadeIn(double t) const override;
+	void drawFadeIn(double t) const override {
+		draw();
+	};
 
 	void updateFadeOut(double t) override;
 
-	void drawFadeOut(double t) const override;
+	void drawFadeOut(double t) const override {
+		draw();
+	};
 
 private:
 	bool checkPuzzleClear() const;
@@ -31,19 +35,23 @@ private:
 	// 図形の配列
 	Array<Piece>& m_pieces;
 
-	Rect m_puzzleViewport{
-		ratioVec(0.45, 0.15).asPoint(),
-		ratioVec(0.53, 0.83).asPoint()
+	// パズルビューポート
+	RectF m_puzzleViewport{
+		ratioVec(0.45, 0.15),
+		ratioVec(0.53, 0.83)
 	};
-	Vec2 m_puzzleViewportDest{ m_puzzleViewport.center()};
+	Vec2 m_puzzleViewportDest{ m_puzzleViewport.center() };
 
-	//Circle m_answerViewport{ getData().gridSize * 6.0, getData().gridSize * 10.0 , getData().gridSize * 5.5 };
-	Circle m_answerViewport{ ratioVec(0.24, 0.54) , getData().gridSize * 5.5};
+	// お手本ビューポート
+	Circle m_answerViewport{ ratioVec(0.24, 0.54) , getData().gridSize * 5.5 };
 	Vec2 m_answerViewportDest{ m_answerViewport.center };
-	Vec2 m_answerViewportOrig{ - m_answerViewport.r, Height() + m_answerViewport.r};
+	Vec2 m_answerViewportOrig{ -m_answerViewport.r, Height() + m_answerViewport.r };
 
-	Transition m_clearTransition{ GameToLevelDuration / 2.0, 0.0s };
-	Transition m_fadeInTransition{ GameToLevelDuration / 2.0, 0.0s };
+	Transition m_clearTransition{ ChangeSceneDuration / 2.0 * 0.8, 0.0s };
+
+	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, ChangeSceneDuration / 2.0 };
+
+	const Audio m_clearAudio{ U"audio/clear.mp3" };
 
 	double m_deltaT = 0;
 };
