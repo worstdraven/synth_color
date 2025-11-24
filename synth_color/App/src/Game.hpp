@@ -47,7 +47,7 @@ private:
 	Vec2 m_answerViewportDest{ m_answerViewport.center };
 	Vec2 m_answerViewportOrig{ -m_answerViewport.r, Height() + m_answerViewport.r };
 
-	Transition m_clearTransition{ ChangeSceneDuration / 2.0, 0.0s };
+	Transition m_clearTransition{ ChangeSceneDuration / 2.0 * 0.8, 0.0s };
 
 	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, ChangeSceneDuration / 2.0 };
 

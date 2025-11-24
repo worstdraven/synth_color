@@ -26,7 +26,10 @@ void Game::update()
 {
 	const int g = getData().gridSize;
 	// 図形のドラッグ処理
-	if (m_selectedPieceIndex != -1) {
+	if (not m_clearTransition.isZero()) {
+		m_clearTransition.update(true);
+	}
+	else if (m_selectedPieceIndex != -1) {
 		// マウスが離されたときの処理
 		if (MouseL.up()) {
 			Vec2 pos = m_pieces[m_selectedPieceIndex].getPrimaryPos();
@@ -58,7 +61,7 @@ void Game::update()
 		}
 	}
 
-	if (not m_clearTransition.isZero()) {
+	if (m_clearTransition.isOne()) {
 		// トランジション中のデルタ時間を初期化
 		m_deltaT = 0;
 		// クリア情報を記録
