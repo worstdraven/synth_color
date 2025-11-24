@@ -51,6 +51,8 @@ private:
 
 	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, ChangeSceneDuration / 2.0 };
 
+	const Audio m_clearAudio{ U"audio/clear.mp3" };
+
 	double m_deltaT = 0;
 };
 

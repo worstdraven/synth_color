@@ -41,4 +41,6 @@ private:
 	Effect m_effect;
 
 	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, DisappearDuration };
+
+	const Audio m_buttonAudio{ U"audio/button.mp3" };
 };

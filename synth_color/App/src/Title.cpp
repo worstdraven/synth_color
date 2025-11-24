@@ -53,6 +53,7 @@ void Title::update()
 	}
 	else if (Scene::Rect().leftClicked())
 	{
+		m_buttonAudio.play();
 		changeScene(State::Level, ChangeSceneDuration);
 	}
 

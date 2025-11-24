@@ -32,4 +32,6 @@ private:
 
 	Array<Piece> m_pieces;
 	Array<double> m_periods, m_phases, m_radiuses;
+
+	const Audio m_buttonAudio{ U"audio/button.mp3" };
 };

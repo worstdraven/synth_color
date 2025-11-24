@@ -140,8 +140,7 @@ bool Game::checkPuzzleClear() const {
 		}
 	}
 	//Print << U"Puzzle cleared!";
-	//const Audio audio{ U"audio/clear.mp3" };
-	//audio.play();
+	m_clearAudio.play();
 	return true;
 };
 
