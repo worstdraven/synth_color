@@ -26,8 +26,10 @@ Game::~Game() {
 void Game::update()
 {
 	const int g = getData().gridSize;
+
 	// 図形のドラッグ処理
 	if (not m_clearTransition.isZero()) {
+		// クリア判定時は一定時間演出
 		m_clearTransition.update(true);
 	}
 	else if (m_selectedPieceIndex != -1) {
@@ -47,13 +49,14 @@ void Game::update()
 
 			m_clearTransition.update(checkPuzzleClear());
 		}
-		// ドラッグされている間、位置をマウスに追従させる
 		else {
+			// ドラッグされている間、位置をマウスに追従させる
 			m_pieces[m_selectedPieceIndex].poly.moveBy(Cursor::DeltaF());
 		}
 	}
 	else {
 		for (int idx = 0; auto& piece : m_pieces) {
+			// 選択されたピースを記憶
 			if (piece.poly.leftPressed()) {
 				m_selectedPieceIndex = idx;
 				break;
@@ -67,10 +70,12 @@ void Game::update()
 		m_deltaT = 0;
 		// クリア情報を記録
 		getData().isCleared[getData().currentLevel] = true;
+		// 次のステージにシーン切り替え
 		changeScene(State::Game, ChangeSceneDuration);
 	}
 
 	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
+		// ステージ選択画面に戻る
 		changeScene(State::Level, ChangeSceneDuration);
 	}
 }
@@ -85,33 +90,34 @@ void Game::draw() const
 	// グリッドの描画
 	getData().drawGrid();
 
+	// 減算ブレンドで全ピースを描画
 	{
-		// 減算ブレンドで全ピースを描画
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
-
 		for (const auto& piece : m_pieces) {
 			piece.draw();
 		}
 	}
-
+	// お手本ビューポートを描写
 	m_answerViewport.draw(Palette::Black);
-
 	// 任意の2つのピースの組み合わせを走査
 	for (int i = 0; i < m_pieces.size() - 1; ++i) {
 		for (int j = i + 1; j < m_pieces.size(); ++j) {
 			if (m_pieces[i].color == m_pieces[j].color) {
+				// 同じ色のピースは混色しないので無視
 				continue;
 			}
+			// 共通部分を取得
 			const Array<Polygon> intersectionPolygons = Geometry2D::And(
 				m_pieces[i].poly.movedBy(-m_pieces[i].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]),
 				m_pieces[j].poly.movedBy(-m_pieces[j].getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[j])
 			);
 			for (const auto& polygon : intersectionPolygons) {
+				// 共通部分を白で塗りつぶす
 				polygon.draw(((ColorF(1.0) - m_pieces[i].color) + (ColorF(1.0) - m_pieces[j].color)).withA(m_changeSceneTransition.value()));
 			}
 		}
 	}
-
+	// 共通部分を正解の色で塗る
 	{
 		const ScopedRenderStates2D blend{ BlendState::Subtractive };
 		for (const auto&& [i, piece] : IndexedRef(m_pieces)) {
