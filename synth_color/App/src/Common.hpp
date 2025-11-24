@@ -7,7 +7,7 @@ using Scene::Height;
 
 // 画面遷移時間
 static constexpr Duration TitleFadeInDuration{ 0.4s };
-static constexpr Duration ChangeSceneDuration{ 2.5s };
+static constexpr Duration ChangeSceneDuration{ 3.0s };
 
 // 減法混色の三原色
 static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };

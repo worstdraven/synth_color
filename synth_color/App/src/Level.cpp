@@ -20,8 +20,8 @@ struct ClickedButtonEffect : IEffect
 		for (auto&& [i, button] : IndexedRef(m_coloredButtons)) {
 			if (Duration{ timeSec } > m_delay) {
 				const double angle = 120_deg * i;
-				const double radius = Width() / 4.5 * std::pow(timeSec, 4.3);
-				button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } *Scene::DeltaTime());
+				const double radius = Width();
+				button.poly.moveBy(Vec2{ std::cos(angle) * radius, std::sin(angle) * radius } * Scene::DeltaTime() * (2.5 * pow(timeSec - m_delay.count(), 1.5)));
 			}
 			{
 				const ScopedRenderStates2D blend{ BlendState::Subtractive };
