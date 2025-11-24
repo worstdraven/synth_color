@@ -53,7 +53,7 @@ void Title::update()
 	}
 	else if (Scene::Rect().leftClicked())
 	{
-		changeScene(State::Level, TitleToLevelDuration);
+		changeScene(State::Level, ChangeSceneDuration);
 	}
 
 

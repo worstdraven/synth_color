@@ -64,11 +64,11 @@ void Game::update()
 		// クリア情報を記録
 		getData().isCleared[getData().currentLevel] = true;
 		getData().currentLevel++;
-		changeScene(State::Game, GameToGameDuration);
+		changeScene(State::Game, ChangeSceneDuration);
 	}
 
 	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
-		changeScene(State::Level, GameToLevelDuration);
+		changeScene(State::Level, ChangeSceneDuration);
 	}
 }
 
