@@ -88,7 +88,6 @@ void Game::draw() const
 
 		for (const auto& piece : m_pieces) {
 			piece.draw();
-			piece.poly.drawFrame(2, ColorF{ 47.0 / 255.0 });
 		}
 	}
 

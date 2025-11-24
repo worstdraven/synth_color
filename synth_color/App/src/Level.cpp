@@ -79,7 +79,7 @@ void Level::draw() const {
 		if (getData().isCleared[i]) {
 			Shape2D::Star(g * 0.8, center - Vec2{ g * 1.6, g * 1.6 })
 				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
-				.drawFrame(2, ColorF{ 47.0 / 255.0, m_changeSceneTransition.value() });
+				.drawFrame(1, ColorF{ 0.0 }.withA(m_changeSceneTransition.value()));
 		}
 	}
 }
