@@ -137,7 +137,7 @@ struct GameData
 					getSubtractiveColorF(object[U"color"].getString())
 				};
 			}
-			else if (object[U"shape"] == U"rectangle" || object[U"shape"] == U"triangle") {
+			else if (object[U"shape"] == U"rectangle" || object[U"shape"] == U"triangle" || object[U"shape"] == U"polygon" ) {
 				Array<Vec2> vertices;
 				for (auto&& [vIndex, vObject] : object[U"vertices"]) {
 					vertices << Vec2{
