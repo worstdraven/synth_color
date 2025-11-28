@@ -205,7 +205,7 @@
         }
       ],
       "correctCenter": [ 4, 3 ],
-      "swappables": [ 1, 2, 3 , 4];
+      "swappables": [ 1, 2, 3, 4]
     }
   ]
 }
