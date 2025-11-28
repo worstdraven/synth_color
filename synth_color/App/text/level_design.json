@@ -130,6 +130,43 @@
         }
       ],
       "correctCenter": [ 3, 3 ]
+    },
+     {
+      "levelId": 3,
+      "pieces": [
+        {
+          "shape": "polygon",
+          "color": "cyan",
+          "vertices": [
+            [ 0, 0 ],
+            [ 3, 3 ],
+            [ 0, 3 ]
+          ],
+          "correctPosition": [ 0, 0 ]
+        },
+        {
+          "shape": "polygon",
+          "color": "magenta",
+           "vertices": [
+            [ 0, 0 ],
+            [ 3, 3 ],
+            [ 0, 3 ]
+          ],
+          "correctPosition": [ -1, 0 ]
+        },
+        {
+          "shape": "polygon",
+          "color": "yellow",
+           "vertices": [
+            [ 0, 0 ],
+            [ 3, 3 ],
+            [ 0, 3 ]
+          ],
+          "correctPosition": [ -1, 1 ]
+        }
+      ],
+      "correctCenter": [ 1, 2 ],
+      "swappables": [ 1, 2, 3 ]
     }
   ]
 }
