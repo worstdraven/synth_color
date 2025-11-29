@@ -14,6 +14,23 @@ static constexpr ColorF SubtractiveCyan = ColorF{ 1.0, 0.0, 0.0 };
 static constexpr ColorF SubtractiveMagenta = ColorF{ 0.0, 1.0, 0.0 };
 static constexpr ColorF SubtractiveYellow = ColorF{ 0.0, 0.0, 1.0 };
 
+static ColorF getDimmedColorF(ColorF color) {
+	return ColorF{
+		Max(color.r, 0.8),
+		Max(color.g, 0.8),
+		Max(color.b, 0.8),
+	};
+	return ColorF{
+		abs(color.r - 0.2),
+		abs(color.g - 0.2),
+		abs(color.b - 0.2),
+	};
+}
+
+static ColorF getAddictiveColorF(ColorF sub1, Color sub2) {
+	return (ColorF{ 1.0 } - sub1) * (ColorF{ 1.0 } - sub2);
+}
+
 static ColorF getSubtractiveColorF(String color) {
 	if (color == U"cyan") {
 		return SubtractiveCyan;

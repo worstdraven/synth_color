@@ -124,6 +124,35 @@ void Game::draw() const
 			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]).draw(piece.color);
 		}
 	}
+
+	if (m_clearTransition.isOne()) {
+		printf("stop\n");
+	}
+	if (not m_clearTransition.isZero()) {
+		ScopedLightBloom target{ m_lightBloom };
+		//m_pieces[0].poly.draw(ColorF{ 1.0, Periodic::Sine0_1(2.0s, Scene::Time()) });
+		for (int i = 0; i < m_pieces.size() - 1; ++i) {
+			for (int j = i + 1; j < m_pieces.size(); ++j) {
+				if (m_pieces[i].color == m_pieces[j].color) {
+					// 同じ色のピースは混色しないので無視
+					continue;
+				}
+				//const Array<Polygon> intersectionPolygons = Geometry2D::And(m_pieces[i].poly, m_pieces[j].poly);
+				//for (const auto& polygon : intersectionPolygons) {
+				for (const auto& polygon : Geometry2D::And(m_pieces[i].poly, m_pieces[j].poly)) {
+					//polygon.draw(ColorF{ 0.4, EaseOutQuint(m_clearTransition.value()) });
+					polygon.draw(getDimmedColorF(getAddictiveColorF(m_pieces[i].color, m_pieces[j].color)).withA(0.8 * EaseOutQuint(m_clearTransition.value())));
+					//polygon.draw(getAddictiveColorF(m_pieces[i].color, m_pieces[j].color).withA(EaseOutQuint(m_clearTransition.value())));
+					//polygon.drawFrame(20, ColorF{ 0.9, 0.85, 0.1, EaseOutQuint(m_clearTransition.value()) }); // 黄色に縁を光らせる
+					//polygon.drawFrame(10, getAddictiveColorF(m_pieces[i].color, m_pieces[j].color).withA(EaseOutQuint(m_clearTransition.value())));
+
+				}
+			}
+		}
+	}
+	Circle circle{ ratioVec(0.5, 0.5), getData().gridSize * 2.0 };
+	circle.draw(getDimmedColorF(getAddictiveColorF(m_pieces[0].color, m_pieces[1].color)));
+	m_lightBloom.draw();
 }
 
 bool Game::checkPuzzleClear() const {
