@@ -177,6 +177,27 @@ struct GameData
 			gridSize * selectedLevel[U"correctCenter"][1].get<int>()
 		};
 	};
+
+	Array<Polygon> getIntersectionPolygons() const {
+		// 共通部分の集合を取得
+		// ただし黒くなる部分は除外する
+
+		// 共通部分を計算
+		Array<Polygon> intersectionPolygons;
+		for (int i = 0; i < pieces.size() - 1; i++) {
+			for (int j = i + 1; j < pieces.size(); j++) {
+				// 色が同じ場合は共通部分は計算しない
+				if (pieces[i].color == pieces[j].color) {
+					continue;
+				}
+				intersectionPolygons.append(Geometry2D::And(pieces[i].poly, pieces[j].poly));
+			}
+		}
+		ClearPrint();
+		Print << intersectionPolygons.size();
+
+		return intersectionPolygons;
+	}
 };
 
 static constexpr Vec2 ratioVec(double x, double y) {
