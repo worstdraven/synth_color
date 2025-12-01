@@ -34,4 +34,6 @@ private:
 	Array<double> m_periods, m_phases, m_radiuses;
 
 	const Audio m_buttonAudio{ U"audio/button.mp3" };
+
+	const Button m_fullscreenButton{ U"\U000F0293", ratioVec(0.90, 0.03), Font{ FontMethod::MSDF, 48, Typeface::Icon_MaterialDesign }, 48.0 * Width() / 800.0};
 };

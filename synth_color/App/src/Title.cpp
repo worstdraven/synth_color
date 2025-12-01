@@ -47,7 +47,7 @@ Title::~Title() {}
 
 void Title::update()
 {
-	if (SimpleGUI::Button(U"change resolution", ratioVec(0.85, 0.03))) {
+	if (m_fullscreenButton.pushed()) {
 		Window::SetFullscreen(Window::GetState().fullscreen ? false : true);
 		changeScene(State::Title, 1);
 	}
@@ -85,4 +85,6 @@ void Title::draw() const
 			piece.draw(1 - m_changeSceneTransition.value());
 		}
 	}
+
+	m_fullscreenButton.draw(1 - m_changeSceneTransition.value());
 }

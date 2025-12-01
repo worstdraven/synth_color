@@ -73,6 +73,96 @@ static void ShowObject(const JSON& value)
 	}
 }
 
+class Button
+{
+public:
+
+	Button() = default;
+
+	Button(const String& label, const Vec2& pos, const Font& font, double fontSize = 20.0)
+		: m_label{ label }
+		, m_pos{ pos }
+		, m_font{ font }
+		, m_fontSize{ fontSize }
+		, m_width{ m_font(label).region(fontSize).w + Padding * 2 } {
+	}
+
+	[[nodiscard]]
+	RectF getRect() const noexcept
+	{
+		if (isEmpty())
+		{
+			return Rect::Empty();
+		}
+
+		return{ m_pos, m_width, ButtonHeight };
+	}
+
+	[[nodiscard]]
+	bool pushed() const noexcept
+	{
+		if (isEmpty())
+		{
+			return false;
+		}
+
+		return getRect().leftClicked();
+	}
+
+	void draw(double alpha = 1.0) const
+	{
+		if (isEmpty())
+		{
+			return;
+		}
+
+		const RectF rect = getRect();
+
+		const bool mouseOver = rect.mouseOver();
+
+		rect.rounded(ButtonRadius).draw(mouseOver ? ButtonMouseOverColor : ButtonColor);
+
+		m_font(m_label).drawAt(m_fontSize, rect.center(), ButtonLabelColor.withA(alpha));
+
+		if (mouseOver)
+		{
+			Cursor::RequestStyle(CursorStyle::Hand);
+		}
+	}
+
+	[[nodiscard]]
+	bool isEmpty() const noexcept
+	{
+		return (m_width == EmptyWidth);
+	}
+
+private:
+
+	String m_label;
+
+	Vec2 m_pos{ 0, 0 };
+
+	Font m_font;
+
+	double m_fontSize = 0.0;
+
+	double m_width = EmptyWidth;
+
+	static constexpr double EmptyWidth = 0.0;
+
+	static constexpr double Padding = 20.0;
+
+	static constexpr double ButtonRadius = 4.0;
+
+	static constexpr int32 ButtonHeight = 40;
+
+	static constexpr ColorF ButtonColor{ 1.0, 1.0 };
+
+	static constexpr ColorF ButtonMouseOverColor{ 1.0, 1.0 };
+
+	static constexpr ColorF ButtonLabelColor{ 0.11 };
+};
+
 // 共有するデータ
 struct GameData
 {
