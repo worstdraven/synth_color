@@ -74,7 +74,7 @@ void Game::update()
 		changeScene(State::Game, ChangeSceneDuration);
 	}
 
-	if (SimpleGUI::Button(U"Back to level select", Vec2{ 20, 20 })) {
+	if (m_menuButton.pushed()) {
 		// ステージ選択画面に戻る
 		changeScene(State::Level, ChangeSceneDuration);
 	}
@@ -124,6 +124,8 @@ void Game::draw() const
 			piece.poly.movedBy(-piece.getPrimaryPos() + m_answerViewportDest - getData().correctCenter + getData().correctPositions[i]).draw(piece.color);
 		}
 	}
+
+	m_menuButton.draw(m_changeSceneTransition.value());
 }
 
 bool Game::checkPuzzleClear() const {

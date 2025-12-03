@@ -54,5 +54,7 @@ private:
 	const Audio m_clearAudio{ U"audio/clear.mp3" };
 
 	double m_deltaT = 0;
+
+	const Button m_menuButton{ U"\U000F159A", ratioVec(0.03, 0.03), Font{ FontMethod::MSDF, 48, Typeface::Icon_MaterialDesign }, 48.0 * Width() / 800.0 };
 };
 
