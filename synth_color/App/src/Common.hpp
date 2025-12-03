@@ -150,15 +150,15 @@ private:
 
 	static constexpr double EmptyWidth = 0.0;
 
-	static constexpr double Padding = 20.0;
+	static constexpr double Padding = 0.0;
 
 	static constexpr double ButtonRadius = 4.0;
 
 	static constexpr int32 ButtonHeight = 40;
+	
+	static constexpr ColorF ButtonColor{ 1.0, 0.0 };
 
-	static constexpr ColorF ButtonColor{ 1.0, 1.0 };
-
-	static constexpr ColorF ButtonMouseOverColor{ 1.0, 1.0 };
+	static constexpr ColorF ButtonMouseOverColor{ 1.0, 0.0 };
 
 	static constexpr ColorF ButtonLabelColor{ 0.11 };
 };
