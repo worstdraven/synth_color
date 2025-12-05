@@ -43,4 +43,18 @@ private:
 	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, DisappearDuration };
 
 	const Audio m_buttonAudio{ U"audio/button.mp3" };
+
+	static constexpr int m_nPages = 2;
+
+	int m_currentPage = 0;
+
+	Triangle m_nextButton;
+	Triangle m_prevButton;
+
+	Stopwatch m_pageTransitionSw;
+	int m_transitionDirection = 0; // 0: none, 1: next, -1: prev
+
+	static constexpr Duration PageSwitchDuration = 0.5s;
+
+	void drawPage(int pageIndex, double xOffset) const;
 };
