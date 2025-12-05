@@ -50,4 +50,11 @@ private:
 
 	Triangle m_nextButton;
 	Triangle m_prevButton;
+
+	Stopwatch m_pageTransitionSw;
+	int m_transitionDirection = 0; // 0: none, 1: next, -1: prev
+
+	static constexpr Duration PageSwitchDuration = 0.5s;
+
+	void drawPage(int pageIndex, double xOffset) const;
 };

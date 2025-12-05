@@ -54,6 +54,16 @@ Level::Level(const InitData& init)
 }
 
 void Level::update() {
+	if (m_pageTransitionSw.isStarted()) {
+		if (m_pageTransitionSw > PageSwitchDuration) {
+			m_currentPage += m_transitionDirection;
+			m_transitionDirection = 0;
+			m_pageTransitionSw.reset();
+		}
+		m_effect.update();
+		return;
+	}
+
 	for (auto&& [i, button] : IndexedRef(m_pieceButtons)) {
 		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
 		if (button.poly.leftClicked() && m_selectedButtonIndex < 0) {
@@ -68,44 +78,72 @@ void Level::update() {
 	if (m_currentPage < m_nPages - 1) {
 		if (m_nextButton.leftClicked()) {
 			m_buttonAudio.play();
-			++m_currentPage;
+			m_transitionDirection = 1;
+			m_pageTransitionSw.restart();
 		}
 	}
     // 最初のページなら左矢印ボタンを有効化
 	if (m_currentPage > 0) {
 		if (m_prevButton.leftClicked()) {
 			m_buttonAudio.play();
-			--m_currentPage;
+			m_transitionDirection = -1;
+			m_pageTransitionSw.restart();
 		}
 	}
 
 	m_effect.update();
 }
 
-void Level::draw() const {
+void Level::drawPage(int pageIndex, double xOffset) const {
 	const int16 g = getData().fetchGridSize();
-	getData().drawGrid();
+	const Transformer2D transform{ Mat3x2::Translate(xOffset, 0) };
 
 	for (int i = 0; i < 8; ++i) {
-		if (i == m_selectedButtonIndex) {
+		if (pageIndex == m_currentPage && i == m_selectedButtonIndex) {
 			continue;
 		}
 		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
 		m_pieceButtons[i].poly.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
-		FontAsset(U"Bold")(i + 1 + m_currentPage * 8).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
+		FontAsset(U"Bold")(i + 1 + pageIndex * 8).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
 		// クリア済みステージにマークを付ける
-		if (getData().isCleared[i + m_currentPage * 8]) {
+		if (getData().isCleared[i + pageIndex * 8]) {
 			Shape2D::Star(g * 0.8, center - Vec2{ g * 1.6, g * 1.6 })
 				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
 				.drawFrame(1, ColorF{ 0.0 }.withA(m_changeSceneTransition.value()));
 		}
 	}
-    // 最終ページなら右矢印を表示
-	if (m_currentPage < m_nPages - 1) {
+}
+
+void Level::draw() const {
+	getData().drawGrid();
+
+	if (m_pageTransitionSw.isStarted()) {
+		const double t = EaseOutCubic(m_pageTransitionSw.sF() / PageSwitchDuration.count());
+		if (m_transitionDirection == 1) {
+			// Next: Current moves Left (-Width), Next moves in from Right (Width -> 0)
+			drawPage(m_currentPage, -Width() * t);
+			drawPage(m_currentPage + 1, Width() * (1.0 - t));
+		}
+		else if (m_transitionDirection == -1) {
+			// Prev: Current moves Right (Width), Prev moves in from Left (-Width -> 0)
+			drawPage(m_currentPage, Width() * t);
+			drawPage(m_currentPage - 1, -Width() * (1.0 - t));
+		}
+	}
+	else {
+		drawPage(m_currentPage, 0);
+	}
+
+	// 最終ページなら右矢印を表示
+	if (m_currentPage < m_nPages - 1 &&
+        not (m_transitionDirection == 1 && m_pageTransitionSw.isStarted())
+    ) {
 		m_nextButton.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
 	}
     // 最終ページなら左矢印を表示
-	if (m_currentPage > 0) {
+	if (m_currentPage > 0 &&
+        not (m_transitionDirection == -1 && m_pageTransitionSw.isStarted())
+    ) {
 		m_prevButton.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
 	}
 }
