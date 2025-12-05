@@ -46,8 +46,11 @@ Level::Level(const InitData& init)
 
 	// GameStruct内のクリア情報配列を初期化
 	if (getData().isCleared.size() == 0) {
-		getData().isCleared = Array<bool>(8, false);
+		getData().isCleared = Array<bool>(16, false);
 	}
+
+	m_nextButton = Triangle{ Vec2{ Width() - 35, Height() / 2 }, 50, 90_deg };
+	m_prevButton = Triangle{ Vec2{ 35, Height() / 2 }, 50, -90_deg };
 }
 
 void Level::update() {
@@ -56,9 +59,23 @@ void Level::update() {
 		if (button.poly.leftClicked() && m_selectedButtonIndex < 0) {
 			m_buttonAudio.play();
 			m_selectedButtonIndex = i;
-			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex, EffectDuration, DisappearDuration);
-			getData().currentLevel = i;
+			m_effect.add<ClickedButtonEffect>(button, m_selectedButtonIndex + m_currentPage * 8, EffectDuration, DisappearDuration);
+			getData().currentLevel = i + m_currentPage * 8;
 			changeScene(State::Game, ChangeSceneDuration);
+		}
+	}
+    // 最終ページなら右矢印ボタンを有効化
+	if (m_currentPage < m_nPages - 1) {
+		if (m_nextButton.leftClicked()) {
+			m_buttonAudio.play();
+			++m_currentPage;
+		}
+	}
+    // 最初のページなら左矢印ボタンを有効化
+	if (m_currentPage > 0) {
+		if (m_prevButton.leftClicked()) {
+			m_buttonAudio.play();
+			--m_currentPage;
 		}
 	}
 
@@ -75,12 +92,20 @@ void Level::draw() const {
 		}
 		const Vec2 center = Vec2{ Width() / 8.0 * (1 + (i % 4) * 2), Height() / 3.0 * (1 + (i / 4)) };
 		m_pieceButtons[i].poly.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
-		FontAsset(U"Bold")(i + 1).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
+		FontAsset(U"Bold")(i + 1 + m_currentPage * 8).drawAt(center, ColorF{ 1.0, m_changeSceneTransition.value() });
 		// クリア済みステージにマークを付ける
-		if (getData().isCleared[i]) {
+		if (getData().isCleared[i + m_currentPage * 8]) {
 			Shape2D::Star(g * 0.8, center - Vec2{ g * 1.6, g * 1.6 })
 				.draw(ColorF{ 1.0, 1.0, 0.0, m_changeSceneTransition.value() })
 				.drawFrame(1, ColorF{ 0.0 }.withA(m_changeSceneTransition.value()));
 		}
+	}
+    // 最終ページなら右矢印を表示
+	if (m_currentPage < m_nPages - 1) {
+		m_nextButton.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
+	}
+    // 最終ページなら左矢印を表示
+	if (m_currentPage > 0) {
+		m_prevButton.draw(ColorF{ 0.0, m_changeSceneTransition.value() });
 	}
 }

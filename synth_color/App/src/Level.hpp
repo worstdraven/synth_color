@@ -43,4 +43,11 @@ private:
 	Transition m_changeSceneTransition{ ChangeSceneDuration / 2.0, DisappearDuration };
 
 	const Audio m_buttonAudio{ U"audio/button.mp3" };
+
+	static constexpr int m_nPages = 2;
+
+	int m_currentPage = 0;
+
+	Triangle m_nextButton;
+	Triangle m_prevButton;
 };
