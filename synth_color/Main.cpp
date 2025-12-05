@@ -11,7 +11,7 @@ void Main()
 
 	FontAsset::Register(U"CommonFont", FontMethod::MSDF, 24, Typeface::Regular);
 
-	FontAsset::Register(U"Bold", FontMethod::MSDF, 48, Typeface::Bold);
+	FontAsset::Register(U"Bold", FontMethod::MSDF, 48, U"font/Noto_Sans_JP/static/NotoSansJP-Bold.ttf");
 
 	App manager;
 	manager.add<Title>(State::Title);

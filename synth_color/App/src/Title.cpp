@@ -76,7 +76,7 @@ void Title::draw() const
 	// タイトル描画
 	m_titleLogo.scaled(0.4 * Width() / 800).drawAt(ratioVec(0.473, 0.454), ColorF{ 1.0 , 1.0 - m_changeSceneTransition.value() });
 
-	FontAsset(U"CommonFont")(U"- クリックしてスタート -")
+	FontAsset(U"Bold")(U"- クリックしてスタート -")
 		.drawAt(ratioVec(0.5, 0.65), ColorF{0.0 , 1.0 - m_changeSceneTransition.value()});
 
 	{
